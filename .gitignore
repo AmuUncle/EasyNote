@@ -6,7 +6,7 @@
 *.la
 *.lai
 *.so
-*.dll
+#*.dll
 *.dylib
 
 # Qt-es
@@ -41,3 +41,21 @@ target_wrapper.*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+
+bin
+debug
+release
+ui_*.h
+Makefile*
+*.pro.user
+*.obj
+#*.lib
+*.Debug
+*.Release
+*.~vsdx
+*.txt
+*.pdb
+
+
+
+!lib
