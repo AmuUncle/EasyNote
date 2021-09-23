@@ -1,0 +1,309 @@
+QPalette{background:#FFFFFF;}*{outline:0px;}
+
+
+QWidget[form="mainpane"] {
+    background: #FFFFFF;
+    border: 1px solid #333;
+}
+
+QWidget[form="NoteViewPane"] {
+    background: #FFFFFF;
+}
+
+QWidget[form="NoteListPane"] {
+    background: #FAFAFA;
+}
+
+QWidget[form="NoteListPane"] QLineEdit
+{
+    padding: 2 20px;
+    background: none;
+    border: 1px solid #E5E5E5;
+    border-radius: 16px;
+}
+
+QWidget[form="NoteListPane"] QListView
+{
+    background: #FAFAFA;
+    border: none;
+    color: #000000;
+}
+
+QWidget[form="NoteListPane"] QListView::item:selected
+{
+    background:#F2F2F2;
+    color: #000000;
+}
+
+QWidget[form="NoteListPane"] QListView::item:hover
+{
+    background:#F2F2F2;
+    color: #000000;
+}
+
+QWidget[form="NoteViewPane"] QLineEdit
+{
+    border: none;
+    padding: 2 20px;
+    background: #FFFFFF;
+    font-size: 30px;
+}
+
+QWidget[form="NoteViewPane"]
+{
+    background-image:url(:/img/img/empty.png);
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+QLabel[navbtnicon="true"] {
+    color: #666;
+}
+
+QLabel[navbtntime="true"] {
+    color: #B2B2B2;
+}
+
+QPushButton#m_btnNewNote {
+    color: #fff;
+    font-size: 14px;
+    border-radius: 20px;
+    background: #5576BD;
+}
+
+QPushButton#m_btnNewNote:hover {
+    background: #445E97;
+}
+
+QPushButton#m_btnNewNote:pressed {
+    background: #445E97;
+}
+
+QPushButton#m_btnNewNote:checked {
+    background: #445E97;
+}
+
+QPushButton#m_btnNewNote:disabled {
+    background: #D7D7D7;
+}
+
+QListView
+{
+    background: none;
+    border: none;
+    color: #1C2959;
+}
+
+QListView::item:selected
+{
+    background:#D2E2FF;
+    color: #1C2959;
+}
+
+QListView::item:hover
+{
+    background:#E8F0FF;
+    color: #1C2959;
+}
+
+QListView::item
+{
+    border-bottom: 0px solid #333;
+    padding-left: 20px;
+}
+
+/*************************************************
+*  iconfont 按钮
+*************************************************/
+
+.IconfontBtn
+{
+    background:none;
+    border-style:none;
+    color:#B9CCE4;
+}
+
+.IconfontBtn:hover
+{
+    color:#998b8b;
+}
+
+.IconfontBtn:pressed
+{
+    color:#695d5d;
+}
+
+.IconfontBtn:checked
+{
+    color:#1a1616;
+}
+
+.IconfontBtn:disabled
+{
+    color:#D7D7D7;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+QMenu
+{
+        background-color : rgb(253,253,254);
+        padding:0px;
+        border-radius:15px;
+}
+
+QMenu::item
+{
+        font-size:10pt;
+        color: rgb(0,0,0);
+        background-color:rgb(253,253,254);
+        padding: 8px 25px 6px 15px;
+        margin: 0px;
+}
+
+QMenu::item:selected
+{
+        background-color : rgb(236,236,237);
+}
+
+QMenu::right-arrow
+{
+        image:url(:/qss/res/right_arrow.png);
+}
+
+QMenu::icon:checked
+{
+        background: rgb(253,253,254);
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        bottom: 1px;
+        left: 1px;
+}
+
+QMenu::icon:checked:selected
+{
+        background-color : rgb(236,236,237);
+}
+
+QMenu::separator
+{
+        height: 1px;
+        background: #E6E8EB;
+}
+
+QLineEdit
+{
+        padding: 3 3px;
+        background: #FFFFFF;
+        border: 1px solid #333;
+}
+
+QScrollBar:horizontal
+{
+        background:none;
+        padding:0px;
+        border-radius:6px;
+        max-height:12px;
+}
+
+QScrollBar::handle:horizontal
+{
+background:#181818;
+min-width:50px;
+border-radius:6px;
+}
+
+QScrollBar::handle:horizontal:hover
+{
+background:#2A2C32;
+}
+
+QScrollBar::handle:horizontal:pressed
+{
+background:#2A2C32;
+}
+
+QScrollBar::add-page:horizontal{
+background:none;
+}
+
+QScrollBar::sub-page:horizontal
+{
+background:none;
+}
+
+QScrollBar::add-line:horizontal
+{
+background:none;
+}
+
+QScrollBar::sub-line:horizontal
+{
+background:none;
+}
+
+QScrollBar:vertical
+{
+        background:#E6E8EB;
+        padding:0px;
+        border-radius:4px;
+        max-width:8px;
+}
+
+QScrollBar::handle:vertical
+{
+        background:#92969B;
+        min-height:50px;
+        border-radius:4px;
+}
+
+QScrollBar::handle:vertical:hover
+{
+background:#2A2C32;
+}
+
+QScrollBar::handle:vertical:pressed
+{
+background:#2A2C32;
+}
+
+QScrollBar::add-page:vertical
+{
+background:none;
+}
+
+QScrollBar::sub-page:vertical
+{
+background:none;
+}
+
+QScrollBar::add-line:vertical{
+background:none;
+}
+
+QScrollBar::sub-line:vertical{
+background:none;
+}
+
+
+
+
+
+

@@ -1,0 +1,268 @@
+QPalette{background:#474747;}*{outline:0px;}
+
+
+QWidget[form="mainpane"] {
+	border-radius: 0;
+	background: #474747;
+	color: #D5D5D5;
+    
+    qproperty-colorBg: #2b2b2b;
+    qproperty-colorLeftBtn: #5768A4;
+}
+
+QWidget[form="m_wLeftPane"],QWidget[form="m_wContentPane"],QWidget[form="m_wRightPane"] {
+	background: #252525;
+	border-radius: 0;
+}
+
+QWidget[form="About"] {
+	border-radius: 0;
+	background: #474747;
+	color: #D5D5D5;
+}
+
+QWidget[form="Canvas"] {
+	qproperty-colorEmptyBg: #2b2b2b;
+    qproperty-colorSelColor: #b0b8d5;
+}
+
+
+QPushButton[title_btn="true"] {
+	background: none;
+	border-style: none;
+	color: #fff;
+	font-size: 12px;
+}
+
+QPushButton[title_btn="true"]:hover {
+	color: #6E78FF;
+}
+
+QPushButton[title_btn="true"]:pressed {
+	color: #6E78FF;
+}
+
+QPushButton[title_btn="true"]:checked {
+	color: #6E78FF;
+}
+
+QPushButton[title_btn="true"]:disabled {
+	color: #D7D7D7;
+}
+
+QPushButton[shape_btn="true"] {
+	background: none;
+	border-style: none;
+	border: 1px solid #333;
+}
+
+QPushButton[shape_btn="true"]:hover {
+	border: 1px solid #5768a4;
+}
+
+QPushButton[shape_btn="true"]:pressed {
+	border: 1px solid #d6dae9;
+}
+
+QPushButton[shape_btn="true"]:checked {
+	border: 1px solid #f0f1f7;
+}
+
+QPushButton[shape_btn="true"]:disabled {
+	color: #D7D7D7;
+}
+
+QLabel[title_label="true"] {
+	color: #fff;
+	font-size: 20px;
+	font-family: "Microsoft YaHei";
+	font-weight: bold;
+}
+
+QLabel[color="true"] {
+	border: 1px solid #333;
+}
+
+QLabel[Separator="true"] {
+	background: #333;
+}
+
+QPushButton#m_btnExport {
+	background: #606060;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+}
+
+QPushButton#m_btnExport:hover {
+	background: #6A6A6A;
+}
+
+.IconfontBtn {
+	background: none;
+	border-style: none;
+	color: #fff;
+}
+
+.IconfontBtn {
+	color: #6E78FF;
+}
+
+.IconfontBtn {
+	color: #6E78FF;
+}
+
+.IconfontBtn {
+	color: #6E78FF;
+}
+
+.IconfontBtn {
+	color: #D7D7D7;
+}
+
+QListView {
+	border: 0px solid #132743;
+}
+
+QListView::item:selected {
+	color: #3F98DE;
+	background: #E5EAEC;
+}
+
+QListView::item:hover {
+	color: #3F98DE;
+	background: #E5EAEC;
+}
+
+QListView::item {
+	border-bottom: 1px solid #E8E8E8;
+}
+
+QMenuBar::item {
+	color: #333333;
+	background-color: #FFFFFF;
+}
+
+QMenu,QMenuBar,QMenu:disabled,QMenuBar:disabled {
+	color: #333333;
+	background-color: #FFFFFF;
+	border: 1px solid #E8E8E8;
+}
+
+QMenu::item {
+	padding: 3px 20px;
+}
+
+QMenu::item:selected,QMenuBar::item:selected {
+	border: 0px solid #E8E8E8;
+	background: #E5EAEC;
+}
+
+QMenu::icon {
+	padding-left: 4px;
+}
+
+QSlider::groove:horizontal {
+	background: #133050;
+	height: 8px;
+	border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+	background: #FFFFFF;
+	height: 8px;
+	border: 1px solid #CECECE;
+}
+
+QSlider::sub-page:horizontal {
+	background: #328DE0;
+	height: 8px;
+	border: 1px solid #CECECE;
+}
+
+QSlider::handle:horizontal {
+	width: 8px;
+	margin-top: -3px;
+	margin-bottom: -3px;
+	border: 1px solid #CECECE;
+	background: #FFFFFF;
+}
+
+QSlider::groove:vertical {
+	width: 8px;
+	border-radius: 4px;
+	background: #133050;
+}
+
+QSlider::add-page:vertical {
+	width: 8px;
+	border-radius: 4px;
+	background: #FFFFFF;
+	border: 1px solid #CECECE;
+}
+
+QSlider::sub-page:vertical {
+	width: 8px;
+	border-radius: 4px;
+	background: #328DE0;
+	border: 1px solid #CECECE;
+}
+
+QSlider::handle:vertical {
+	margin-left: -3px;
+	margin-right: -3px;
+	border-radius: 6px;
+	border: 1px solid #CECECE;
+	background: #FFFFFF;
+}
+
+QScrollBar:vertical,QScrollBar:horizontal {
+	background: #FFFFFF;
+	padding: 0px;
+	max-width: 5px;
+}
+
+QScrollBar::handle:vertical,QScrollBar::handle:horizontal {
+	background: #B3B3B3;
+	min-height: 20px;
+}
+
+QScrollBar::add-page:vertical,QScrollBar::add-page:horizontal {
+	background: none;
+}
+
+QScrollBar::sub-page:vertical,QScrollBar::sub-page:horizontal {
+	background: none;
+}
+
+QScrollBar::add-line:vertical,QScrollBar::add-line:horizontal {
+	background: none;
+	height: 0px;
+	width: 0px;
+}
+
+QScrollBar::sub-line:vertical,QScrollBar::sub-line:horizontal {
+	background: none;
+	height: 0px;
+	width: 0px;
+}
+
+QComboBox {
+	border: none;
+	background: #606060;
+	color: #ffffff;
+	min-width: 60px;
+	height: 26px;
+}
+
+QComboBox::drop-down {
+	border: none;
+}
+
+QComboBox::down-arrow {
+	image: url(:/img/img/down.png);
+	height: 30px;
+	width: 20px;
+	border: none;
+}
+

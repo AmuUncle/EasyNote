@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/css">
+        <file>css/flatui.css</file>
+        <file>css/ps.css</file>
+        <file>css/style.css</file>
+        <file>css/youdao.css</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file>img/down.png</file>
+        <file>img/icon.ico</file>
+        <file>img/icon.png</file>
+        <file>img/iconfont.ttf</file>
+        <file>img/logo.png</file>
+        <file>font/iconfont.ttf</file>
+        <file>img/empty.png</file>
+    </qresource>
+    <qresource prefix="/html">
+        <file>html/index.html</file>
+        <file>html/qwebchannel.js</file>
+        <file>html/wangEditor.min.js</file>
+    </qresource>
+</RCC>
