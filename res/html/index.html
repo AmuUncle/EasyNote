@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <title>菜鸟教程(runoob.com)</title>
+
+
+    <script type="text/javascript" src="wangEditor.min.js"></script>
+
 
 </head>
 
@@ -11,33 +15,85 @@
 
     <div>
         <div id="div1">
-            <p>欢迎使用 <b>阿木大叔</b> 笔记本</p>
+            <p></p>
         </div>
     </div>
 
 
 </body>
+<style>
+	* {
+		font-family:"Microsoft Yahei";
+	}
+	
+    .w-e-text{
+        overflow-y: auto;
+        background-color: #f8f8f8;
+        height: 200px;
+        padding: 10px;
+    }
+	.w-e-text::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+		scrollbar-arrow-color:red;
+		cursor: pointer;
 
-<script
-  type="text/javascript"
-  src="wangEditor.min.js"
-></script>
+	}
+	.w-e-text::-webkit-scrollbar-thumb {
+		border-radius: 5px;
+		-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+		background: rgba(0,0,0,0.2);
+		scrollbar-arrow-color:red;
+		cursor: pointer;
+	}
+	.w-e-text::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+		border-radius: 0;
+		background: rgba(0,0,0,0.1);
+		cursor: pointer;
+	}
+</style>
 
+<script src="qwebchannel.js"></script> 
 <script type="text/javascript">
-  const E = window.wangEditor
-  const editor = new E(document.getElementById('div1'))
-  editor.config.showFullScreen = false
-  // 配置颜色（文字颜色、背景色）
-editor.config.colors = [
-    '#ff0000',
-    '#eeece0',
-    '#1c487f',
-    '#4d80bf'
-]
+    const E = window.wangEditor;
+    console.log(E, document.getElementById('div1'));
+    const editor = new E(document.getElementById('div1'))
 
-  editor.create()
-  
-  editor.fullScreen() // 全屏
+    editor.config.showFullScreen = false
+    
+    editor.config.height = 500
+    console.log(editor);
+    editor.create();
+    editor.fullScreen() // 全屏
+
+    // 配置 onchange 回调函数
+    <!-- editor.config.onchange = function (newHtml) { -->
+        <!-- //console.log("change 之后最新的 html", newHtml); -->
+
+        <!-- new QWebChannel(qt.webChannelTransport, function (channel) { -->
+		<!-- var qtui = channel.objects.qtui; -->
+		<!-- qtui.recieveJsMessage(newHtml); -->
+<!-- }) -->
+    <!-- }; -->
+	
+	
+    function setHtml(xx) {
+		const ss = window.decodeURIComponent(window.atob(xx))
+		console.log(ss);
+        editor.txt.html(ss); // 重新设置编辑器内容
+    }
+	
+    function getHtml() {
+		 const ss = window.btoa(window.encodeURIComponent(editor.txt.html()));
+		 console.log(ss, editor.txt.html());
+		 
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+			var qtui = channel.objects.qtui;
+			qtui.recieveJsMessage(ss, editor.txt.html());
+		});
+    }
+	
 </script>
 
 <style>

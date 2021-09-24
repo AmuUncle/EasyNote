@@ -12,6 +12,10 @@ class NoteViewPane : public QWidget
     Q_OBJECT
 public:
     explicit NoteViewPane(QWidget *parent = 0);
+    ~NoteViewPane();
+
+public:
+    QString GetTitle() { return m_editTitle->text(); }
 
 private:
     GLOBAL_FUNC
@@ -19,16 +23,19 @@ private:
     QString GetJsRetString();
 
 public slots: // 一定要这样定义哦，否则会收不到消息
-    void recieveJsMessage(const QString& jsMsg);
+    void recieveJsMessage(const QString& jsBase64Msg, const QString& jsMsg);
     void OnItemChange(int nId);
 
     void OnNoteChange(TNoteItem tItem);
     void OnSelGroup();
+    void OnTitleChange(const QString &strTitle);
 
     bool eventFilter(QObject *obj, QEvent *e);
 
 signals:
     void signalRunJsOver();
+    void signalTitleChange(QString strTitle);
+    void SignalMenuClicked(MenuType eType);
 
 private:
     QLineEdit *m_editTitle;
@@ -43,7 +50,6 @@ private:
     QPushButton *m_btnMax;
     QPushButton *m_btnClose;
     QPushButton *m_btnAbout;
-
 };
 
 #endif // NOTEVIEWPANE_H

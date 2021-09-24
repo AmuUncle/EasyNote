@@ -144,7 +144,29 @@ QListView::item
 }
 
 
+QPushButton[title_btn="true"] 
+{
+    background: none;
+    color:#3B4D62;
+    font-weight: 100;
+}
 
+QPushButton[title_btn="true"]:hover 
+{
+    background: #E8F0FF;
+    color:#3B4D62;
+}
+
+QPushButton[title_btn="true"]:pressed 
+{
+    background: #D2E2FF;
+    color:#3B4D62;
+}
+
+QPushButton[title_btn="true"]:disabled {
+    background: #E8F0FF;
+    color:#3B4D62;
+}
 
 
 

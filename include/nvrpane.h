@@ -18,9 +18,11 @@ private slots:
     void OnItemClicked(QListWidgetItem *item);
 
     void AddItem(QListWidgetItem *item, QString strName, QChar icon);
+    void OnBtnNewClicked();
 
 signals:
     void SignalIDChange(int nId);
+    void SignalNewNote();
 
 private:
     QLabel *m_labelLogo;

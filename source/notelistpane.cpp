@@ -8,12 +8,17 @@ NoteListPane::NoteListPane(QWidget *parent) : QWidget(parent)
     m_editSearch = NULL;
     m_listNoteItems = NULL;
 
+    m_nId = 0;
+    m_bGroupMode = false;
+
     GLOBAL_FUNC_RUN
 }
 
 void NoteListPane::OnIdChange(int nId)
 {
     qDebug() << nId;
+
+    m_nId = nId;
 
     m_listNoteItems->clear();
 
@@ -125,6 +130,91 @@ void NoteListPane::OnCurrentRowChanged(int currentRow)
    }
 }
 
+void NoteListPane::OnItemDoubleClicked(QListWidgetItem *item)
+{
+    if (NULL == item)
+        return;
+
+    ItemType eType = (ItemType)(item->data(Qt::UserRole).toInt());
+    int nId = item->data(Qt::UserRole + 1).toInt();
+
+    if (GROUPS == eType)
+    {
+        OnIdChange(nId);
+    }
+}
+
+void NoteListPane::OnBtnBackClicked()
+{
+    if (!m_bGroupMode)
+        return;
+
+    int nFid = DATAMGR->GetGroupFId(m_nId);
+
+    if (nFid != m_nId)
+    {
+        OnIdChange(nFid);
+    }
+}
+
+void NoteListPane::OnTitleChange(const QString &strTitle)
+{
+    QListWidgetItem *item = m_listNoteItems->currentItem();
+    if (NULL == item)
+        return;
+
+    QWidget *w = m_listNoteItems->itemWidget(item);
+    QList<QLabel *> listBtns = w->findChildren<QLabel *>();
+    foreach (QLabel *btn, listBtns)
+    {
+        if (btn->property("navbtntitle").toBool())
+        {
+            btn->setText(strTitle);
+            return;
+        }
+    }
+}
+
+void NoteListPane::OnUpdateList()
+{
+    OnIdChange(m_nId);
+}
+
+void NoteListPane::OnAddNewNote()
+{
+    TNoteItem tItem;
+    tItem.nFId = m_nId >= RECENT ? DEFAULT : m_nId;
+    tItem.strTitle = tr("新建文档");
+    DATAMGR->NewNote(tItem);
+
+    OnUpdateList();
+}
+
+void NoteListPane::Serach(const QString &key)
+{
+    if (key.length() <= 0)
+    {
+        OnIdChange(m_nId);
+        return;
+    }
+
+    QList<TNoteItem> listDir = DATAMGR->Search(key);
+
+    m_listNoteItems->clear();
+    foreach (TNoteItem item, listDir) {
+
+        QListWidgetItem *item1 = new QListWidgetItem();
+        item1->setSizeHint(QSize(10, 50));
+        item1->setData(Qt::UserRole, NOTE);
+        item1->setData(Qt::UserRole + 1, item.nId);
+        m_listNoteItems->addItem(item1);
+
+        AddItem(item1, item.strTitle, QChar(0xe61e), item.strTime);
+    }
+
+    m_listNoteItems->setCurrentRow(0);
+}
+
 void NoteListPane::CreateAllChildWnd()
 {
     NEW_OBJECT(m_btnBack, QPushButton);
@@ -147,7 +237,10 @@ void NoteListPane::InitCtrl()
 
 void NoteListPane::InitSolts()
 {
+    connect(m_btnBack, SIGNAL(clicked()), this, SLOT(OnBtnBackClicked()));
+    connect(m_editSearch, SIGNAL(textChanged(const QString &)), this, SLOT(Serach(const QString &)));
     connect(m_listNoteItems, SIGNAL(currentRowChanged(int)), this, SLOT(OnCurrentRowChanged(int)));
+    connect(m_listNoteItems, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnItemDoubleClicked(QListWidgetItem*)));
 }
 
 void NoteListPane::Relayout()
@@ -177,6 +270,7 @@ void NoteListPane::AddItem(QListWidgetItem *item, QString strName, QChar icon, Q
     pLabelIcon->setProperty("navbtnicon", true);
 
     pLabelTitle->setText(strName);
+    pLabelTitle->setProperty("navbtntitle", true);
 
     pLabelTime->setText(strTime.mid(5, 5));
     pLabelTime->setProperty("navbtntime", true);

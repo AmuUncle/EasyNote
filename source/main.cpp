@@ -7,6 +7,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setFont(QFont("Microsoft Yahei", 10));
     a.setWindowIcon(QIcon(":/img/img/icon.png"));
 
     Start();
@@ -22,7 +23,6 @@ int main(int argc, char *argv[])
         qApp->setStyleSheet(qss);
         file.close();
     }
-
 
     DATAMGR->Open();
 

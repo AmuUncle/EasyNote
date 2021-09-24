@@ -37,6 +37,11 @@ void NvrPane::AddItem(QListWidgetItem *item, QString strName, QChar icon)
     m_listNav->setItemWidget(item, pItemWidget);
 }
 
+void NvrPane::OnBtnNewClicked()
+{
+    emit SignalNewNote();
+}
+
 void NvrPane::CreateAllChildWnd()
 {
     NEW_OBJECT(m_labelLogo, QLabel);
@@ -60,10 +65,6 @@ void NvrPane::InitCtrl()
     m_btnNewNote->setText(tr("新文档"));
     m_btnNewNote->setObjectName("m_btnNewNote");
 
-
-    QList<TUserCustomItem> list = DATAMGR->GetUserCustomItem();
-
-
     QListWidgetItem *item1 = new QListWidgetItem();
     item1->setSizeHint(QSize(10, 50));
     item1->setData(Qt::UserRole, RECENT);
@@ -74,16 +75,7 @@ void NvrPane::InitCtrl()
     item2->setSizeHint(QSize(10, 50));
     item2->setData(Qt::UserRole, DEFAULT);
     m_listNav->addItem(item2);
-    AddItem(item2, tr("默认分类"), QChar(0xe61b));
-
-    foreach (TUserCustomItem _item, list) {
-        QListWidgetItem *item = new QListWidgetItem();
-        item->setSizeHint(QSize(10, 50));
-        item->setData(Qt::UserRole, _item.nId);
-        m_listNav->addItem(item);
-
-        AddItem(item, _item.strName, QChar(0xe788));
-    }
+    AddItem(item2, tr("我的文档"), QChar(0xe61b));
 
     QListWidgetItem *item3 = new QListWidgetItem();
     item3->setSizeHint(QSize(10, 50));
@@ -96,11 +88,19 @@ void NvrPane::InitCtrl()
     item4->setData(Qt::UserRole, DELETED);
     m_listNav->addItem(item4);
     AddItem(item4, tr("回收站"), QChar(0xe724));
+
+    QTimer::singleShot(500, this, [=]()
+    {
+        m_listNav->setCurrentItem(item2);
+        emit SignalIDChange(DEFAULT);
+    });
+
 }
 
 void NvrPane::InitSolts()
 {
     connect(m_listNav, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(OnItemClicked(QListWidgetItem*)));
+    connect(m_btnNewNote, SIGNAL(clicked()), this, SLOT(OnBtnNewClicked()));
 }
 
 void NvrPane::Relayout()

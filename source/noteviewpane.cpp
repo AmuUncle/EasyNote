@@ -16,6 +16,11 @@ NoteViewPane::NoteViewPane(QWidget *parent) : QWidget(parent)
     GLOBAL_FUNC_RUN
 }
 
+NoteViewPane::~NoteViewPane()
+{
+    m_pWebChannel->deregisterObject(this);
+}
+
 void NoteViewPane::CreateAllChildWnd()
 {
     NEW_OBJECT(m_editTitle, QLineEdit);
@@ -52,20 +57,21 @@ void NoteViewPane::InitCtrl()
     m_btnAbout->setProperty("title_btn", true);
     m_btnMax->setProperty("title_btn", true);
 
-    SetIcon(m_btnMin, QChar(0xe614));
-    SetIcon(m_btnMax, QChar(0xe614));
-    SetIcon(m_btnClose, QChar(0xe677));
-    SetIcon(m_btnAbout, QChar(0xe601));
+    SetIcon(m_btnMin, QChar(0xe8f2), 20);
+    SetIcon(m_btnMax, QChar(0xe8f3), 20);
+    SetIcon(m_btnClose, QChar(0xe837), 20);
+    SetIcon(m_btnAbout, QChar(0xe601), 20);
 
     QWebEngineSettings *webSetting = QWebEngineSettings::globalSettings();
     webSetting->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     webSetting->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     webSetting->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
-    m_webView->load(QUrl("file:///E:/CODE/gitlab/vue_doc/index.html"));
+    m_webView->load(QUrl("qrc:/html/html/index.html"));
 
     // 注册一个qtui对象  html端通过此名称向qt端发送消息
     m_pWebChannel->registerObject(QString("qtui"), this);
     m_webView->page()->setWebChannel(m_pWebChannel);
+
     QTimer::singleShot(100, this, [=]()
     {
         QList<QWidget*> items = findChildren<QWidget*>();
@@ -78,6 +84,22 @@ void NoteViewPane::InitCtrl()
 
 void NoteViewPane::InitSolts()
 {
+    connect(m_editTitle, SIGNAL(textChanged(const QString &)), this, SLOT(OnTitleChange(const QString &)));
+
+    QSignalMapper *pSignalMapperPushed = new QSignalMapper(this);
+    pSignalMapperPushed->setMapping(m_btnMin, MENUTYPE_MIN);
+    pSignalMapperPushed->setMapping(m_btnMax, MENUTYPE_MAX);
+    pSignalMapperPushed->setMapping(m_btnClose, MENUTYPE_CLOSE);
+    pSignalMapperPushed->setMapping(m_btnAbout, MENUTYPE_ABOUT);
+
+    connect(m_btnMin, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
+    connect(m_btnMax, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
+    connect(m_btnClose, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
+    connect(m_btnAbout, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
+
+    connect(pSignalMapperPushed, static_cast<void (QSignalMapper:: *)(int)>(&QSignalMapper::mapped), [=](int cmd) {
+        emit SignalMenuClicked((MenuType)cmd);
+    });
 }
 
 void NoteViewPane::Relayout()
@@ -112,9 +134,13 @@ void NoteViewPane::Relayout()
     setLayout(mainLayout);
 }
 
-void NoteViewPane::recieveJsMessage(const QString &jsMsg)
+void NoteViewPane::recieveJsMessage(const QString &jsBase64Msg, const QString &jsMsg)
 {
+    m_tNoteItem.strContent = jsBase64Msg;
+    m_tNoteItem.strContentSrc = jsMsg;
+    m_tNoteItem.strTitle = m_editTitle->text();
 
+    DATAMGR->SaveNote(m_tNoteItem);
 }
 
 void NoteViewPane::OnItemChange(int nId)
@@ -148,6 +174,11 @@ void NoteViewPane::OnSelGroup()
     GetJsRetString();
 }
 
+void NoteViewPane::OnTitleChange(const QString &strTitle)
+{
+    emit signalTitleChange(strTitle);
+}
+
 QString NoteViewPane::GetJsRetString()
 {
     if (!m_webView->isVisible())
@@ -158,18 +189,10 @@ QString NoteViewPane::GetJsRetString()
 
     QString jsStr = "getHtml();";// getHtml
 
-    QString retStr{}; // 返回值
+    QString retStr; // 返回值
     // 通过loop循环等到回调上来数据再继续
     m_webView->page()->runJavaScript(jsStr, [&](const QVariant &v)
     {
-        retStr = v.toString();
-        qDebug() << retStr;
-
-        m_tNoteItem.strContent = retStr;
-        m_tNoteItem.strTitle = m_editTitle->text();
-
-        DATAMGR->SaveNote(m_tNoteItem);
-
         // 在头文件中定义这个函数，收到js的回调返回值后，结束loop循环
         emit signalRunJsOver();
     });

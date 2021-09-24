@@ -49,6 +49,14 @@ enum ItemType
     NOTE = 1
 };
 
+enum MenuType
+{
+    MENUTYPE_MIN = 0,
+    MENUTYPE_MAX,
+    MENUTYPE_ABOUT,
+    MENUTYPE_CLOSE,
+};
+
 struct TUserCustomItem
 {
     int nId;
@@ -58,8 +66,10 @@ struct TUserCustomItem
 struct TNoteItem
 {
     int nId;
+    int nFId;
     QString strTitle;
     QString strContent;
+    QString strContentSrc;
     QString strTime;
 };
 

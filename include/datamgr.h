@@ -30,9 +30,14 @@ public:
     QList<TNoteItem> GetFavorites();
     QList<TNoteItem> GetDeleted();
 
+    QList<TNoteItem> Search(QString strKey);
+
     TNoteItem GetNote(int nId);
+    int GetGroupFId(int nId);
 
     bool SaveNote(TNoteItem tItem);
+
+    bool NewNote(TNoteItem tItem);
 
 private:
     static DataMgr *m_pDataMgr;
