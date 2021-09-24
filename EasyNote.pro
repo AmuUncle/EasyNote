@@ -42,3 +42,6 @@ DEPENDPATH += $$PWD/lib/
 
 RESOURCES += \
     res/res.qrc
+
+RC_FILE +=  \
+    res/icon.rc

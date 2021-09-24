@@ -6,12 +6,13 @@ NoteViewPane::NoteViewPane(QWidget *parent) : QWidget(parent)
     m_webView = NULL;
     m_pWebChannel = NULL;
 
-    m_widgetTop = NULL;
     m_widgetMenu = NULL;
     m_btnMin = NULL;
     m_btnMax = NULL;
     m_btnClose = NULL;
     m_btnAbout = NULL;
+
+    m_widgetEmpty = NULL;
 
     GLOBAL_FUNC_RUN
 }
@@ -27,13 +28,13 @@ void NoteViewPane::CreateAllChildWnd()
     NEW_OBJECT(m_webView, QWebEngineView);
     NEW_OBJECT(m_pWebChannel, QWebChannel);
 
-    NEW_OBJECT(m_widgetTop, QWidget);
-
     NEW_OBJECT(m_widgetMenu, QWidget);
     NEW_OBJECT(m_btnMin, QPushButton);
     NEW_OBJECT(m_btnMax, QPushButton);
     NEW_OBJECT(m_btnClose, QPushButton);
     NEW_OBJECT(m_btnAbout, QPushButton);
+
+    NEW_OBJECT(m_widgetEmpty, QWidget);
 }
 
 void NoteViewPane::InitCtrl()
@@ -44,7 +45,6 @@ void NoteViewPane::InitCtrl()
     qApp->installEventFilter(this);
 
     m_editTitle->setFixedHeight(60);
-    m_widgetTop->setFixedHeight(60);
     m_widgetMenu->setFixedSize(30 * 4, 30);
 
     m_btnMin->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -74,11 +74,9 @@ void NoteViewPane::InitCtrl()
 
     QTimer::singleShot(100, this, [=]()
     {
-        QList<QWidget*> items = findChildren<QWidget*>();
-        for (QWidget *item : items) {
-            if (!item->property("title_btn").toBool())
-                item->hide();
-        }
+        m_editTitle->hide();
+        m_webView->hide();
+        m_widgetEmpty->show();
     });
 }
 
@@ -112,23 +110,19 @@ void NoteViewPane::Relayout()
     MenuLayout->setContentsMargins(0, 0, 0, 0);
     MenuLayout->setSpacing(0);
 
-
-
-    QVBoxLayout *barLayout = new QVBoxLayout();
-    barLayout->addWidget(m_widgetMenu);
+    QHBoxLayout *barLayout = new QHBoxLayout();
     barLayout->addStretch();
+    barLayout->addWidget(m_widgetMenu);
     barLayout->setContentsMargins(0, 0, 0, 0);
     barLayout->setSpacing(0);
 
-    QHBoxLayout *topLayout = new QHBoxLayout(m_widgetTop);
-    topLayout->addWidget(m_editTitle);
-    topLayout->addLayout(barLayout);
-    topLayout->setContentsMargins(0, 0, 0, 0);
-    topLayout->setSpacing(0);
-
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(m_widgetTop);
+    mainLayout->addLayout(barLayout);
+    mainLayout->addWidget(m_editTitle);
     mainLayout->addWidget(m_webView);
+    mainLayout->addWidget(m_widgetEmpty);
+    mainLayout->addStretch();
+
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
@@ -152,11 +146,9 @@ void NoteViewPane::OnNoteChange(TNoteItem tItem)
 {
     m_tNoteItem = tItem;
 
-    QList<QWidget*> items = findChildren<QWidget*>();
-    for (QWidget *item : items) {
-        if (!item->property("title_btn").toBool())
-            item->show();
-    }
+    m_editTitle->show();
+    m_webView->show();
+    m_widgetEmpty->hide();
 
     m_editTitle->setText(m_tNoteItem.strTitle);
     QString jsStr = QString(QString("setHtml('%1')").arg(m_tNoteItem.strContent));
@@ -165,11 +157,9 @@ void NoteViewPane::OnNoteChange(TNoteItem tItem)
 
 void NoteViewPane::OnSelGroup()
 {
-    QList<QWidget*> items = findChildren<QWidget*>();
-    for (QWidget *item : items) {
-        if (!item->property("title_btn").toBool())
-            item->hide();
-    }
+    m_editTitle->hide();
+    m_webView->hide();
+    m_widgetEmpty->show();
 
     GetJsRetString();
 }

@@ -20,6 +20,8 @@ public:
 private:
     GLOBAL_FUNC
 
+    void UpdateLayout();
+
     QString GetJsRetString();
 
 public slots: // 一定要这样定义哦，否则会收不到消息
@@ -44,12 +46,13 @@ private:
 
     TNoteItem m_tNoteItem;
 
-    QWidget *m_widgetTop;
     QWidget *m_widgetMenu;
     QPushButton *m_btnMin;
     QPushButton *m_btnMax;
     QPushButton *m_btnClose;
     QPushButton *m_btnAbout;
+
+    QWidget *m_widgetEmpty;
 };
 
 #endif // NOTEVIEWPANE_H
