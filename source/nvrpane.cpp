@@ -14,7 +14,6 @@ void NvrPane::OnItemClicked(QListWidgetItem *item)
 {
     int nId = item->data(Qt::UserRole).toInt();
 
-    qDebug() << nId;
     emit SignalIDChange(nId);
 }
 

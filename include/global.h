@@ -71,6 +71,7 @@ struct TNoteItem
     QString strContent;
     QString strContentSrc;
     QString strTime;
+    bool bFavorited;
 };
 
 #endif // GLOBAL_H

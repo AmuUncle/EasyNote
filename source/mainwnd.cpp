@@ -60,10 +60,12 @@ void MainWnd::InitCtrl()
 
 void MainWnd::InitSolts()
 {
-    connect(m_pNvrPane, SIGNAL(SignalIDChange(int)), m_pNoteListPane, SLOT(OnIdChange(int)));
     connect(m_pNvrPane, &NvrPane::SignalIDChange, [=](int id) {
         m_pNoteListPane->EnableGroupMode(id == DEFAULT);
+        DATAMGR->SetNavItem((NavItem)id);
     });
+
+    connect(m_pNvrPane, SIGNAL(SignalIDChange(int)), m_pNoteListPane, SLOT(OnIdChange(int)));
 
     connect(m_pNvrPane, SIGNAL(SignalNewNote()), m_pNoteListPane, SLOT(OnAddNewNote()));
 

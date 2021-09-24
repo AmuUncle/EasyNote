@@ -29,6 +29,8 @@ private slots:
     void OnUpdateList();
     void OnAddNewNote();
 
+    void OnListChange();
+
     void Serach(const QString &key);
 
 signals:

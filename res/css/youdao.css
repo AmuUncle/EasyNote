@@ -16,7 +16,7 @@ QWidget[form="NoteListPane"] {
 
 QWidget[form="NoteListPane"] QLineEdit
 {
-    padding: 2 20px;
+    padding: 2 10px;
     background: none;
     border: 1px solid #E5E5E5;
     border-radius: 16px;
@@ -85,6 +85,28 @@ QPushButton#m_btnNewNote:checked {
 
 QPushButton#m_btnNewNote:disabled {
     background: #D7D7D7;
+}
+
+QWidget[form="NoteItem"] QPushButton {
+    color: #605E5C;
+    font-size: 14px;
+    background: none;
+}
+
+QWidget[form="NoteItem"] QPushButton:hover {
+	color: #000;
+}
+
+QWidget[form="NoteItem"] QPushButton:pressed {
+	color: #000;
+}
+
+QWidget[form="NoteItem"] QPushButton:checked {
+	color: #000;
+}
+
+QWidget[form="NoteItem"] QPushButton:disabled {
+	color: #333;
 }
 
 QListView

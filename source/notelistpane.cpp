@@ -1,5 +1,6 @@
 ﻿#include "notelistpane.h"
 #include "datamgr.h"
+#include "noteitem.h"
 
 
 NoteListPane::NoteListPane(QWidget *parent) : QWidget(parent)
@@ -16,8 +17,6 @@ NoteListPane::NoteListPane(QWidget *parent) : QWidget(parent)
 
 void NoteListPane::OnIdChange(int nId)
 {
-    qDebug() << nId;
-
     m_nId = nId;
 
     m_listNoteItems->clear();
@@ -35,7 +34,9 @@ void NoteListPane::OnIdChange(int nId)
             item1->setData(Qt::UserRole + 1, item.nId);
             m_listNoteItems->addItem(item1);
 
-            AddItem(item1, item.strName, QChar(0xe7b8), "06-17");
+            NoteItem *pItem = new NoteItem(this);
+            pItem->SetParam(item);
+            m_listNoteItems->setItemWidget(item1, pItem);
         }
 
         int nCount = m_listNoteItems->count();
@@ -47,7 +48,9 @@ void NoteListPane::OnIdChange(int nId)
             item1->setData(Qt::UserRole + 1, item.nId);
             m_listNoteItems->addItem(item1);
 
-            AddItem(item1, item.strTitle, QChar(0xe61e), item.strTime);
+            NoteItem *pItem = new NoteItem(this);
+            pItem->SetParam(item);
+            m_listNoteItems->setItemWidget(item1, pItem);
         }
 
         m_listNoteItems->setCurrentRow(nCount);
@@ -66,7 +69,9 @@ void NoteListPane::OnIdChange(int nId)
                 item1->setData(Qt::UserRole + 1, item.nId);
                 m_listNoteItems->addItem(item1);
 
-                AddItem(item1, item.strTitle, QChar(0xe61e), item.strTime);
+                NoteItem *pItem = new NoteItem(this);
+                pItem->SetParam(item);
+                m_listNoteItems->setItemWidget(item1, pItem);
             }
         }
         else if (nId == FAVORITES)
@@ -81,7 +86,9 @@ void NoteListPane::OnIdChange(int nId)
                 item1->setData(Qt::UserRole + 1, item.nId);
                 m_listNoteItems->addItem(item1);
 
-                AddItem(item1, item.strTitle, QChar(0xe61e), item.strTime);
+                NoteItem *pItem = new NoteItem(this);
+                pItem->SetParam(item);
+                m_listNoteItems->setItemWidget(item1, pItem);
             }
         }
         else if (nId == DELETED)
@@ -96,7 +103,9 @@ void NoteListPane::OnIdChange(int nId)
                 item1->setData(Qt::UserRole + 1, item.nId);
                 m_listNoteItems->addItem(item1);
 
-                AddItem(item1, item.strTitle, QChar(0xe61e), item.strTime);
+                NoteItem *pItem = new NoteItem(this);
+                pItem->SetParam(item);
+                m_listNoteItems->setItemWidget(item1, pItem);
             }
         }
 
@@ -190,6 +199,11 @@ void NoteListPane::OnAddNewNote()
     OnUpdateList();
 }
 
+void NoteListPane::OnListChange()
+{
+    OnIdChange(m_nId);
+}
+
 void NoteListPane::Serach(const QString &key)
 {
     if (key.length() <= 0)
@@ -233,10 +247,31 @@ void NoteListPane::InitCtrl()
 
     m_editSearch->setFixedHeight(38);
     m_editSearch->setPlaceholderText(tr("请输入搜索内容"));
+
+    QPushButton *btnClear = new QPushButton(this);
+    SetIcon(btnClear, QChar(0xe837));
+    QHBoxLayout *layout = new QHBoxLayout();
+    btnClear->setCursor(QCursor(Qt::PointingHandCursor));
+    layout->addStretch();
+    layout->addWidget(btnClear);
+    layout->setContentsMargins(0,0,5,0);
+    m_editSearch->setLayout(layout);
+
+    btnClear->hide();
+
+    connect(m_editSearch, &QLineEdit::textChanged, [=](const QString &text) {
+        btnClear->setVisible(text.length() > 0);
+    });
+
+    connect(btnClear, &QPushButton::clicked, [=]() {
+        m_editSearch->setText("");
+    });
 }
 
 void NoteListPane::InitSolts()
 {
+    connect(DATAMGR, SIGNAL(SignalNoteListChange()), this, SLOT(OnListChange()));
+
     connect(m_btnBack, SIGNAL(clicked()), this, SLOT(OnBtnBackClicked()));
     connect(m_editSearch, SIGNAL(textChanged(const QString &)), this, SLOT(Serach(const QString &)));
     connect(m_listNoteItems, SIGNAL(currentRowChanged(int)), this, SLOT(OnCurrentRowChanged(int)));

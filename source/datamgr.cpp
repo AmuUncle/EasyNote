@@ -6,7 +6,7 @@ DataMgr* DataMgr::m_pDataMgr = NULL;
 
 DataMgr::DataMgr(QObject *parent) : QObject(parent)
 {
-
+    m_eNavItem = DEFAULT;
 }
 
 DataMgr *DataMgr::GetInstance()
@@ -141,7 +141,7 @@ QList<TNoteItem> DataMgr::GetUserCustomChildNote(int nFId)
     QList<TNoteItem> list;
 
     QSqlQuery sql_query;
-    QString select_sql = QString("select ID, TITLE, TIME from noteinfo where FID == %1 ORDER BY TIME DESC;").arg(nFId);
+    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED == 0 and FID == %1 ORDER BY TIME DESC;").arg(nFId);
     if(!sql_query.exec(select_sql))
     {
         qDebug()<<sql_query.lastError();
@@ -155,6 +155,8 @@ QList<TNoteItem> DataMgr::GetUserCustomChildNote(int nFId)
             tItem.nId = sql_query.value(0).toInt();
             tItem.strTitle = sql_query.value(1).toString();
             tItem.strTime = sql_query.value(2).toString();
+            tItem.bFavorited = sql_query.value(3).toBool();
+
             list.append(tItem);
         }
     }
@@ -167,7 +169,7 @@ QList<TNoteItem> DataMgr::GetRecent()
     QList<TNoteItem> list;
 
     QSqlQuery sql_query;
-    QString select_sql = QString("select ID, TITLE, TIME from noteinfo where DELETEED == 0  ORDER BY TIME DESC limit 10;");
+    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED == 0  ORDER BY TIME DESC limit 10;");
     if(!sql_query.exec(select_sql))
     {
         qDebug()<<sql_query.lastError();
@@ -181,6 +183,7 @@ QList<TNoteItem> DataMgr::GetRecent()
             tItem.nId = sql_query.value(0).toInt();
             tItem.strTitle = sql_query.value(1).toString();
             tItem.strTime = sql_query.value(2).toString();
+            tItem.bFavorited = sql_query.value(3).toBool();
             list.append(tItem);
         }
     }
@@ -193,7 +196,7 @@ QList<TNoteItem> DataMgr::GetFavorites()
     QList<TNoteItem> list;
 
     QSqlQuery sql_query;
-    QString select_sql = QString("select ID, TITLE, TIME from noteinfo where FAVORITES > 0 and DELETEED == 0 ORDER BY TIME DESC;");
+    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where FAVORITES > 0 and DELETEED == 0 ORDER BY TIME DESC;");
     if(!sql_query.exec(select_sql))
     {
         qDebug()<<sql_query.lastError();
@@ -207,6 +210,7 @@ QList<TNoteItem> DataMgr::GetFavorites()
             tItem.nId = sql_query.value(0).toInt();
             tItem.strTitle = sql_query.value(1).toString();
             tItem.strTime = sql_query.value(2).toString();
+            tItem.bFavorited = sql_query.value(3).toBool();
             list.append(tItem);
         }
     }
@@ -219,7 +223,7 @@ QList<TNoteItem> DataMgr::GetDeleted()
     QList<TNoteItem> list;
 
     QSqlQuery sql_query;
-    QString select_sql = QString("select ID, TITLE, TIME from noteinfo where DELETEED > 0 ORDER BY TIME DESC;");
+    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED > 0 ORDER BY TIME DESC;");
     if(!sql_query.exec(select_sql))
     {
         qDebug()<<sql_query.lastError();
@@ -233,6 +237,7 @@ QList<TNoteItem> DataMgr::GetDeleted()
             tItem.nId = sql_query.value(0).toInt();
             tItem.strTitle = sql_query.value(1).toString();
             tItem.strTime = sql_query.value(2).toString();
+            tItem.bFavorited = sql_query.value(3).toBool();
             list.append(tItem);
         }
     }
@@ -245,7 +250,7 @@ QList<TNoteItem> DataMgr::Search(QString strKey)
     QList<TNoteItem> list;
 
     QSqlQuery sql_query;
-    QString update_sql = QString("SELECT ID, TITLE, TIME FROM noteinfo WHERE TITLE  LIKE '%%1%' or CONTENT_SRC LIKE '%%1%' ORDER BY TIME DESC;").arg(strKey);
+    QString update_sql = QString("SELECT ID, TITLE, TIME, FAVORITES FROM noteinfo WHERE DELETEED == 0 and TITLE  LIKE '%%1%' or CONTENT_SRC LIKE '%%1%' ORDER BY TIME DESC;").arg(strKey);
     sql_query.prepare(update_sql);
 
     qDebug() << update_sql;
@@ -263,6 +268,7 @@ QList<TNoteItem> DataMgr::Search(QString strKey)
             tItem.nId = sql_query.value(0).toInt();
             tItem.strTitle = sql_query.value(1).toString();
             tItem.strTime = sql_query.value(2).toString();
+            tItem.bFavorited = sql_query.value(3).toBool();
             list.append(tItem);
         }
     }
@@ -348,6 +354,70 @@ bool DataMgr::NewNote(TNoteItem tItem)
     sql_query.bindValue(":CONTENT", tItem.strContent);
     sql_query.bindValue(":FID", tItem.nFId);
     if (!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug()<<"updated!";
+    }
+
+    return true;
+}
+
+bool DataMgr::RemoveNote(int nId, bool bDeleted)
+{
+    QSqlQuery sql_query;
+    QString update_sql = QString("UPDATE noteinfo SET DELETEED = %2  WHERE ID = %1").arg(nId).arg(bDeleted);
+    sql_query.prepare(update_sql);
+
+    qDebug() << update_sql;
+
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug()<<"DELETE!";
+    }
+
+    emit SignalNoteListChange();
+
+    return true;
+}
+
+bool DataMgr::DelNote(int nId)
+{
+    QSqlQuery sql_query;
+    QString update_sql = QString("DELETE from noteinfo WHERE ID = %1;").arg(nId);
+
+    sql_query.prepare(update_sql);
+
+    qDebug() << update_sql;
+    if(!sql_query.exec())
+    {
+        qDebug()<<sql_query.lastError();
+    }
+    else
+    {
+        qDebug()<<"updated!";
+    }
+
+    emit SignalNoteListChange();
+
+    return true;
+}
+
+bool DataMgr::FavoriteNote(int nId, bool bFavorite)
+{
+    QSqlQuery sql_query;
+    QString update_sql = QString("UPDATE noteinfo SET FAVORITES = %1 WHERE ID = %2;").arg(bFavorite).arg(nId);
+
+    sql_query.prepare(update_sql);
+
+    qDebug() << update_sql;
+    if(!sql_query.exec())
     {
         qDebug()<<sql_query.lastError();
     }

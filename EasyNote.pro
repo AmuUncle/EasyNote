@@ -24,14 +24,16 @@ SOURCES += source/main.cpp\
     source/mainwnd.cpp \
     source/nvrpane.cpp \
     source/notelistpane.cpp \
-    source/noteviewpane.cpp
+    source/noteviewpane.cpp \
+    source/noteitem.cpp
 
 HEADERS  += include/mainwnd.h \
     include/datamgr.h \
     include/nvrpane.h \
     include/notelistpane.h \
     include/noteviewpane.h \
-    include/global.h
+    include/global.h \
+    include/noteitem.h
 
 unix|win32: LIBS += -L$$PWD/lib/ -lBasicSdk
 

@@ -22,6 +22,9 @@ public:
     void Open();
     void InitDB();
 
+    void SetNavItem(NavItem eNavItem) { m_eNavItem = eNavItem; }
+    NavItem GetNavItem() { return m_eNavItem; }
+
     QList<TUserCustomItem> GetUserCustomItem();
     QList<TUserCustomItem> GetUserCustomChildItem(int nFId);
     QList<TNoteItem> GetUserCustomChildNote(int nFId);
@@ -38,10 +41,17 @@ public:
     bool SaveNote(TNoteItem tItem);
 
     bool NewNote(TNoteItem tItem);
+    bool RemoveNote(int nId, bool bDeleted = true);
+    bool DelNote(int nId);
+    bool FavoriteNote(int nId, bool bFavorite);
+
+signals:
+    void SignalNoteListChange();
 
 private:
     static DataMgr *m_pDataMgr;
 
+    NavItem m_eNavItem;
     QSqlDatabase m_dbData;
 };
 
