@@ -17,6 +17,12 @@ DESTDIR = bin
 unix:UI_DIR = ../tmp/ui
 win32:UI_DIR = tmp/ui
 
+CONFIG(release, debug|release){
+    DEFINES += QT_NO_WARNING_OUTPUT QT_NO_DEBUG_OUTPUT
+}
+
+win32:QMAKE_LFLAGS_WINDOWS += /LARGEADDRESSAWARE
+
 INCLUDEPATH += include
 
 SOURCES += source/main.cpp\
@@ -25,7 +31,8 @@ SOURCES += source/main.cpp\
     source/nvrpane.cpp \
     source/notelistpane.cpp \
     source/noteviewpane.cpp \
-    source/noteitem.cpp
+    source/noteitem.cpp \
+    source/about.cpp
 
 HEADERS  += include/mainwnd.h \
     include/datamgr.h \
@@ -33,7 +40,8 @@ HEADERS  += include/mainwnd.h \
     include/notelistpane.h \
     include/noteviewpane.h \
     include/global.h \
-    include/noteitem.h
+    include/noteitem.h \
+    include/about.h
 
 unix|win32: LIBS += -L$$PWD/lib/ -lBasicSdk
 

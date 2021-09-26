@@ -191,8 +191,22 @@ QPushButton[title_btn="true"]:disabled {
     color:#3B4D62;
 }
 
+QWidget[form="About"] 
+{
+	border-radius: 10px;
+    background: #FFFFFF;;
+}
 
+QPushButton {
+	background: #6656F5;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+}
 
+QPushButton:hover {
+	background: #3b2ad6;
+}
 
 QMenu
 {

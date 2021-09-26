@@ -25,6 +25,9 @@ private:
     GLOBAL_FUNC
 
     void InitMainPaneLayout();
+    void PlayCloseAnimation();
+
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWnd *ui;
@@ -33,6 +36,8 @@ private:
     NvrPane *m_pNvrPane;
     NoteListPane *m_pNoteListPane;
     NoteViewPane *m_pNoteViewPane;
+
+    bool m_bCloseAnimationState;
 };
 
 #endif // MAINWND_H

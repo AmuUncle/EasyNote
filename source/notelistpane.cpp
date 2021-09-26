@@ -53,7 +53,13 @@ void NoteListPane::OnIdChange(int nId)
             m_listNoteItems->setItemWidget(item1, pItem);
         }
 
-        m_listNoteItems->setCurrentRow(nCount);
+        if (nCount == m_listNoteItems->count())
+        {
+            m_listNoteItems->setCurrentRow(0);
+            emit SignalSelGroup();
+        }
+        else
+            m_listNoteItems->setCurrentRow(nCount);
     }
     else
     {
@@ -110,6 +116,9 @@ void NoteListPane::OnIdChange(int nId)
         }
 
         m_listNoteItems->setCurrentRow(0);
+
+        if (0 == m_listNoteItems->count())
+            emit SignalSelGroup();
     }
 }
 

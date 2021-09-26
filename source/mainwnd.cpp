@@ -4,13 +4,15 @@
 #include "nvrpane.h"
 #include "notelistpane.h"
 #include "noteviewpane.h"
-
+#include "about.h"
 
 MainWnd::MainWnd(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWnd)
 {
     ui->setupUi(this);
+
+    m_bCloseAnimationState = false;
 
     m_pMainPane = NULL;
     m_pNvrPane = NULL;
@@ -93,7 +95,11 @@ void MainWnd::InitSolts()
             break;
 
         case MENUTYPE_ABOUT:
+            {
 
+                About dlg(this);
+                dlg.exec();
+            }
             break;
 
         case MENUTYPE_CLOSE:
@@ -111,4 +117,34 @@ void MainWnd::Relayout()
     mainLayout->addWidget(m_pMainPane);
     mainLayout->setMargin(0);
     setLayout(mainLayout);
+}
+
+void MainWnd::closeEvent(QCloseEvent *event)
+{
+    if(!m_bCloseAnimationState)
+    {
+        PlayCloseAnimation();
+        event->ignore();
+    }
+    else{
+        event->accept();
+    }
+}
+
+
+void MainWnd::PlayCloseAnimation()
+{
+    setDisabled(true);
+    setMinimumSize(0,0);
+
+    QPropertyAnimation* closeAnimation = new QPropertyAnimation(this,"geometry");
+    closeAnimation->setStartValue(geometry());
+    closeAnimation->setEndValue(QRect(geometry().x(), geometry().y()+height()/2, width(), 0));
+    closeAnimation->setDuration(500);
+    m_bCloseAnimationState = true;
+
+    closeAnimation->setEasingCurve(QEasingCurve::OutBounce);  // 缓和曲线风格
+
+    connect(closeAnimation,SIGNAL(finished()),this,SLOT(close()));
+    closeAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
