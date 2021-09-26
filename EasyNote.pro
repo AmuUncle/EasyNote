@@ -45,3 +45,4 @@ RESOURCES += \
 
 RC_FILE +=  \
     res/icon.rc
+

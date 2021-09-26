@@ -28,7 +28,7 @@
 	
     .w-e-text{
         overflow-y: auto;
-        background-color: #f8f8f8;
+        background-color: #fff
         height: 200px;
         padding: 10px;
     }
@@ -52,6 +52,10 @@
 		background: rgba(0,0,0,0.1);
 		cursor: pointer;
 	}
+	
+	.w-e-text-container .placeholder {
+		top: 20px;
+	}
 </style>
 
 <script src="qwebchannel.js"></script> 
@@ -67,17 +71,6 @@
     editor.create();
     editor.fullScreen() // 全屏
 
-    // 配置 onchange 回调函数
-    <!-- editor.config.onchange = function (newHtml) { -->
-        <!-- //console.log("change 之后最新的 html", newHtml); -->
-
-        <!-- new QWebChannel(qt.webChannelTransport, function (channel) { -->
-		<!-- var qtui = channel.objects.qtui; -->
-		<!-- qtui.recieveJsMessage(newHtml); -->
-<!-- }) -->
-    <!-- }; -->
-	
-	
     function setHtml(xx) {
 		const ss = window.decodeURIComponent(window.atob(xx))
 		console.log(ss);
@@ -93,7 +86,6 @@
 			qtui.recieveJsMessage(ss, editor.txt.html());
 		});
     }
-	
 </script>
 
 <style>

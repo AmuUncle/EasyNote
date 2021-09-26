@@ -28,8 +28,11 @@ void DataMgr::ExitInstance()
 
 void DataMgr::Open()
 {
+    QString strAppDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    qDebug() << strAppDataLocation;
+
     m_dbData = QSqlDatabase::addDatabase("QSQLITE");
-    m_dbData.setDatabaseName("MyDataBase.db");
+    m_dbData.setDatabaseName(strAppDataLocation + "/MyDataBase.db");
     m_dbData.setUserName("XingYeZhiXia");
     m_dbData.setPassword("123456");
 

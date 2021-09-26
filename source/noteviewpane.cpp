@@ -77,6 +77,9 @@ void NoteViewPane::InitCtrl()
         m_editTitle->hide();
         m_webView->hide();
         m_widgetEmpty->show();
+
+        setFocus();
+        m_webView->setFocus();
     });
 }
 
@@ -118,11 +121,9 @@ void NoteViewPane::Relayout()
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(barLayout);
+    mainLayout->addWidget(m_widgetEmpty);
     mainLayout->addWidget(m_editTitle);
     mainLayout->addWidget(m_webView);
-    mainLayout->addWidget(m_widgetEmpty);
-    mainLayout->addStretch();
-
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     setLayout(mainLayout);

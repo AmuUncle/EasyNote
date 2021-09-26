@@ -47,6 +47,7 @@ QWidget[form="NoteViewPane"] QLineEdit
     padding: 2 20px;
     background: #FFFFFF;
     font-size: 30px;
+    border-bottom: 1px solid #EEEEEE;
 }
 
 QWidget[form="NoteViewPane"]
@@ -189,18 +190,6 @@ QPushButton[title_btn="true"]:disabled {
     background: #E8F0FF;
     color:#3B4D62;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
