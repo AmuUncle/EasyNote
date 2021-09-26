@@ -46,7 +46,7 @@ void About::InitCtrl()
 
 
     m_btnOk->setText(tr("确认"));
-    m_btnOk->setObjectName("m_btnExport");
+    m_btnOk->setProperty("default", true);
 
     QImage img(":/img/img/logo.png");
     m_labelLogo->setPixmap(QPixmap::fromImage(img.scaled(m_labelLogo->size(),

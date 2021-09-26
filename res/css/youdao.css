@@ -197,14 +197,14 @@ QWidget[form="About"]
     background: #FFFFFF;;
 }
 
-QPushButton {
+QPushButton[default="true"] {
 	background: #6656F5;
 	color: #fff;
 	border: none;
 	border-radius: 5px;
 }
 
-QPushButton:hover {
+QPushButton[default="true"]:hover {
 	background: #3b2ad6;
 }
 
