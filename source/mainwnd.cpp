@@ -1,17 +1,13 @@
 ﻿#include "mainwnd.h"
-#include "ui_mainwnd.h"
 
-#include "nvrpane.h"
+#include "navpane.h"
 #include "notelistpane.h"
 #include "noteviewpane.h"
 #include "about.h"
 
 MainWnd::MainWnd(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::MainWnd)
+    QWidget(parent)
 {
-    ui->setupUi(this);
-
     m_bCloseAnimationState = false;
 
     m_pMainPane = NULL;
@@ -26,7 +22,6 @@ MainWnd::MainWnd(QWidget *parent) :
 
 MainWnd::~MainWnd()
 {
-    delete ui;
 }
 
 void MainWnd::InitMainPaneLayout()
@@ -42,7 +37,7 @@ void MainWnd::InitMainPaneLayout()
 void MainWnd::CreateAllChildWnd()
 {
     NEW_OBJECT(m_pMainPane, QWidget);
-    NEW_OBJECT(m_pNvrPane, NvrPane);
+    NEW_OBJECT(m_pNvrPane, NavPane);
     NEW_OBJECT(m_pNoteListPane, NoteListPane);
     NEW_OBJECT(m_pNoteViewPane, NoteViewPane);
 }
@@ -62,7 +57,7 @@ void MainWnd::InitCtrl()
 
 void MainWnd::InitSolts()
 {
-    connect(m_pNvrPane, &NvrPane::SignalIDChange, [=](int id) {
+    connect(m_pNvrPane, &NavPane::SignalIDChange, [=](int id) {
         m_pNoteListPane->EnableGroupMode(id == DEFAULT);
         DATAMGR->SetNavItem((NavItem)id);
     });
@@ -105,6 +100,49 @@ void MainWnd::InitSolts()
         case MENUTYPE_CLOSE:
             close();
             break;
+
+        case MENUITEM_THEME_DEFAULT:
+            {
+                QFile file(":/css/css/youdao.css");
+                if (file.open(QFile::ReadOnly))
+                {
+                    QString qss = QLatin1String(file.readAll());
+                    QString paletteColor = qss.mid(20, 7);
+                    qApp->setPalette(QPalette(QColor(paletteColor)));
+                    qApp->setStyleSheet(qss);
+                    file.close();
+                }
+            }
+            break;
+
+        case MENUITEM_THEME_FLATUI:
+            {
+                QFile file(":/css/css/flatui.css");
+                if (file.open(QFile::ReadOnly))
+                {
+                    QString qss = QLatin1String(file.readAll());
+                    QString paletteColor = qss.mid(20, 7);
+                    qApp->setPalette(QPalette(QColor(paletteColor)));
+                    qApp->setStyleSheet(qss);
+                    file.close();
+                }
+            }
+            break;
+
+        case MENUITEM_THEME_PS:
+            {
+                QFile file(":/css/css/ps.css");
+                if (file.open(QFile::ReadOnly))
+                {
+                    QString qss = QLatin1String(file.readAll());
+                    QString paletteColor = qss.mid(20, 7);
+                    qApp->setPalette(QPalette(QColor(paletteColor)));
+                    qApp->setStyleSheet(qss);
+                    file.close();
+                }
+            }
+            break;
+
         default:
             break;
         }

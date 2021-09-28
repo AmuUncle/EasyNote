@@ -58,9 +58,9 @@ void NoteViewPane::InitCtrl()
     m_btnMax->setProperty("title_btn", true);
 
     SetIcon(m_btnMin, QChar(0xe8f2), 20);
-    SetIcon(m_btnMax, QChar(0xe8f3), 20);
+    SetIcon(m_btnMax, QChar(0xe65b), 20);
     SetIcon(m_btnClose, QChar(0xe837), 20);
-    SetIcon(m_btnAbout, QChar(0xe601), 20);
+    SetIcon(m_btnAbout, QChar(0xe8c4), 20);
 
     QWebEngineSettings *webSetting = QWebEngineSettings::globalSettings();
     webSetting->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
@@ -86,6 +86,7 @@ void NoteViewPane::InitCtrl()
 void NoteViewPane::InitSolts()
 {
     connect(m_editTitle, SIGNAL(textChanged(const QString &)), this, SLOT(OnTitleChange(const QString &)));
+    connect(m_btnAbout, SIGNAL(clicked()), this, SLOT(OnBtnMoreClicked()));
 
     QSignalMapper *pSignalMapperPushed = new QSignalMapper(this);
     pSignalMapperPushed->setMapping(m_btnMin, MENUTYPE_MIN);
@@ -96,7 +97,6 @@ void NoteViewPane::InitSolts()
     connect(m_btnMin, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
     connect(m_btnMax, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
     connect(m_btnClose, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
-    connect(m_btnAbout, SIGNAL(clicked()), pSignalMapperPushed, SLOT(map()));
 
     connect(pSignalMapperPushed, static_cast<void (QSignalMapper:: *)(int)>(&QSignalMapper::mapped), [=](int cmd) {
         emit SignalMenuClicked((MenuType)cmd);
@@ -168,6 +168,58 @@ void NoteViewPane::OnSelGroup()
 void NoteViewPane::OnTitleChange(const QString &strTitle)
 {
     emit signalTitleChange(strTitle);
+}
+
+void NoteViewPane::OnBtnMoreClicked()
+{
+    //创建菜单对象
+    QMenu *pMenu = new QMenu();
+
+    QAction *pRest = new QAction(tr("默认"), pMenu);
+    pRest->setData(MENUITEM_THEME_DEFAULT);
+    QAction *pGoOffwork = new QAction(tr("扁平化"), pMenu);
+    pGoOffwork->setData(MENUITEM_THEME_FLATUI);
+    QAction *pGoOffwork2 = new QAction(tr("ps"), pMenu);
+    pGoOffwork2->setData(MENUITEM_THEME_PS);
+
+    QMenu *pChildRest = new QMenu(pMenu);
+    pChildRest->setTitle(tr("主题"));
+    pChildRest->addAction(pRest);
+    pChildRest->addAction(pGoOffwork);
+    pChildRest->addAction(pGoOffwork2);
+
+    QAction *pMsgMgr = new QAction(tr("关于"), pMenu);
+    pMsgMgr->setData(MENUTYPE_ABOUT);
+
+    //把QAction对象添加到菜单上
+    pMenu->addMenu(pChildRest);
+    pMenu->addAction(pMsgMgr);
+
+
+    connect(pMenu, SIGNAL(triggered(QAction*)), this, SLOT(OnMenuTriggered(QAction*)));
+
+    //ui.posBtn->mapToGlobal(ui.posBtn->pos());
+
+    QPoint ptMenu = m_btnAbout->mapToGlobal(m_btnAbout->pos());
+
+    qDebug() << m_btnAbout->pos() << ptMenu;
+
+    ptMenu.setX(ptMenu.x() + 2);
+    ptMenu.setY(ptMenu.y() + m_btnAbout->height() + 2);
+    pMenu->exec(ptMenu);
+
+    //释放内存
+    QList<QAction*> list = pMenu->actions();
+    foreach (QAction* pAction, list)
+        delete pAction;
+
+    delete pMenu;
+}
+
+void NoteViewPane::OnMenuTriggered(QAction *action)
+{
+    MenuType item = (MenuType)(action->data().toInt());
+    emit SignalMenuClicked(item);
 }
 
 QString NoteViewPane::GetJsRetString()

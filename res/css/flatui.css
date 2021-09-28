@@ -153,22 +153,22 @@ QListView::item
 {
     background:none;
     border-style:none;
-    color:#998b8b;
+    color:#695d5d;
 }
 
 .IconfontBtn:hover
 {
-    color:#695d5d;
+    color:#000;
 }
 
 .IconfontBtn:pressed
 {
-    color:#695d5d;
+    color:#000;
 }
 
 .IconfontBtn:checked
 {
-    color:#1a1616;
+    color:#000;
 }
 
 .IconfontBtn:disabled
@@ -207,14 +207,14 @@ QWidget[form="About"]
     background: #E5EEC1;;
 }
 
-QPushButton[default="true"] {
+QPushButton[default_btn="true"] {
 	background: #6656F5;
 	color: #fff;
 	border: none;
 	border-radius: 5px;
 }
 
-QPushButton[default="true"]:hover {
+QPushButton[default_btn="true"]:hover {
 	background: #3b2ad6;
 }
 

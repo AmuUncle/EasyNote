@@ -1,4 +1,5 @@
 ﻿#include "noteitem.h"
+#include "popconfirm.h"
 
 NoteItem::NoteItem(QWidget *parent) : QWidget(parent)
 {
@@ -59,7 +60,7 @@ void NoteItem::enterEvent(QEvent *event)
     if (m_eType != ITEMTYPE_NOTE)
     {
         m_btnDel->show();
-        m_btnAdd->show();
+        m_btnAdd->hide();
         m_btnFavorite->hide();
     }
     else
@@ -149,13 +150,34 @@ void NoteItem::InitSolts()
         if (m_eType == ITEMTYPE_NOTE)
         {
             if (m_bRestoreMode)
-                DATAMGR->DelNote(m_tNoteIte.nId);
+            {
+                if (QMessageBox::Ok == QMessageBox::warning(this, PRJ_NAME, tr("是否确认删除？"),
+                                                    QMessageBox::Ok | QMessageBox::Cancel,
+                                                    QMessageBox::Cancel))
+                {
+                    DATAMGR->DelNote(m_tNoteIte.nId);
+                }
+            }
             else
-                DATAMGR->RemoveNote(m_tNoteIte.nId);
+            {
+                if (QMessageBox::Ok == QMessageBox::warning(this, PRJ_NAME, tr("是否确认删除？"),
+                                                    QMessageBox::Ok | QMessageBox::Cancel,
+                                                    QMessageBox::Cancel))
+                {
+                    DATAMGR->RemoveNote(m_tNoteIte.nId);
+                }
+
+
+            }
         }
         else
         {
-
+            if (QMessageBox::Ok == QMessageBox::warning(this, PRJ_NAME, tr("是否确认删除？"),
+                                                QMessageBox::Ok | QMessageBox::Cancel,
+                                                QMessageBox::Cancel))
+            {
+                DATAMGR->DelFolder(m_tGroupItem.nId);
+            }
         }
     });
 
@@ -174,6 +196,7 @@ void NoteItem::InitSolts()
 void NoteItem::Relayout()
 {
     QHBoxLayout *ToolsLayout = new QHBoxLayout(m_widgetTools);
+    ToolsLayout->addStretch();
     ToolsLayout->addWidget(m_btnDel);
     ToolsLayout->addWidget(m_btnAdd);
     ToolsLayout->addWidget(m_btnFavorite);
@@ -186,7 +209,6 @@ void NoteItem::Relayout()
     rightLayout->addWidget(m_labelTime);
     rightLayout->setMargin(0);
     rightLayout->setSpacing(0);
-
 
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->addWidget(m_labelIcon);

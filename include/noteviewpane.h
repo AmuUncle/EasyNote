@@ -31,6 +31,8 @@ public slots: // 一定要这样定义哦，否则会收不到消息
     void OnNoteChange(TNoteItem tItem);
     void OnSelGroup();
     void OnTitleChange(const QString &strTitle);
+    void OnBtnMoreClicked();
+    void OnMenuTriggered(QAction*);
 
     bool eventFilter(QObject *obj, QEvent *e);
 

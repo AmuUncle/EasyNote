@@ -1,6 +1,7 @@
 ﻿#include "notelistpane.h"
 #include "datamgr.h"
 #include "noteitem.h"
+#include "addfolder.h"
 
 
 NoteListPane::NoteListPane(QWidget *parent) : QWidget(parent)
@@ -8,6 +9,7 @@ NoteListPane::NoteListPane(QWidget *parent) : QWidget(parent)
     m_btnBack = NULL;
     m_editSearch = NULL;
     m_listNoteItems = NULL;
+    m_btnAddFolder = NULL;
 
     m_nId = 0;
     m_bGroupMode = false;
@@ -175,6 +177,15 @@ void NoteListPane::OnBtnBackClicked()
     }
 }
 
+void NoteListPane::OnBtnAddFolderClicked()
+{
+    AddFolder dlg(this);
+    if (QDialog::Accepted == dlg.exec())
+    {
+        DATAMGR->NewFolder(m_nId, dlg.GetName());
+    }
+}
+
 void NoteListPane::OnTitleChange(const QString &strTitle)
 {
     QListWidgetItem *item = m_listNoteItems->currentItem();
@@ -243,6 +254,7 @@ void NoteListPane::CreateAllChildWnd()
     NEW_OBJECT(m_btnBack, QPushButton);
     NEW_OBJECT(m_editSearch, QLineEdit);
     NEW_OBJECT(m_listNoteItems, QListWidget);
+    NEW_OBJECT(m_btnAddFolder, QPushButton);
 }
 
 void NoteListPane::InitCtrl()
@@ -256,6 +268,9 @@ void NoteListPane::InitCtrl()
 
     m_editSearch->setFixedHeight(38);
     m_editSearch->setPlaceholderText(tr("请输入搜索内容"));
+
+    m_btnAddFolder->setFixedSize(38, 38);
+    SetIcon(m_btnAddFolder, QChar(0xe695));
 
     QPushButton *btnClear = new QPushButton(this);
     SetIcon(btnClear, QChar(0xe837));
@@ -282,6 +297,8 @@ void NoteListPane::InitSolts()
     connect(DATAMGR, SIGNAL(SignalNoteListChange()), this, SLOT(OnListChange()));
 
     connect(m_btnBack, SIGNAL(clicked()), this, SLOT(OnBtnBackClicked()));
+    connect(m_btnAddFolder, SIGNAL(clicked()), this, SLOT(OnBtnAddFolderClicked()));
+
     connect(m_editSearch, SIGNAL(textChanged(const QString &)), this, SLOT(Serach(const QString &)));
     connect(m_listNoteItems, SIGNAL(currentRowChanged(int)), this, SLOT(OnCurrentRowChanged(int)));
     connect(m_listNoteItems, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(OnItemDoubleClicked(QListWidgetItem*)));
@@ -292,7 +309,8 @@ void NoteListPane::Relayout()
     QHBoxLayout *layoutSearch = new QHBoxLayout();
     layoutSearch->addWidget(m_btnBack);
     layoutSearch->addWidget(m_editSearch);
-    layoutSearch->setMargin(8);
+    layoutSearch->addWidget(m_btnAddFolder);
+    layoutSearch->setMargin(4);
     layoutSearch->setSpacing(0);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);

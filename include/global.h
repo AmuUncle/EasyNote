@@ -18,6 +18,7 @@
 
 #define VERSION "v1.0"
 #define MAX_OUTPUT_SIZE 1024
+#define PRJ_NAME "EasyNote"
 
 #define GLOBAL_FUNC \
         void CreateAllChildWnd(); \
@@ -55,6 +56,9 @@ enum MenuType
     MENUTYPE_MAX,
     MENUTYPE_ABOUT,
     MENUTYPE_CLOSE,
+    MENUITEM_THEME_DEFAULT = 100,
+    MENUITEM_THEME_FLATUI,
+    MENUITEM_THEME_PS,
 };
 
 struct TUserCustomItem

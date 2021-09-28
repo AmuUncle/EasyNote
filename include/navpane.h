@@ -5,11 +5,11 @@
 
 #include "global.h"
 
-class NvrPane : public QWidget
+class NavPane : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NvrPane(QWidget *parent = 0);
+    explicit NavPane(QWidget *parent = 0);
 
 private:
     GLOBAL_FUNC

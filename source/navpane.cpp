@@ -1,7 +1,7 @@
-﻿#include "nvrpane.h"
+﻿#include "navpane.h"
 #include "datamgr.h"
 
-NvrPane::NvrPane(QWidget *parent) : QWidget(parent)
+NavPane::NavPane(QWidget *parent) : QWidget(parent)
 {
     m_labelLogo = NULL;
     m_btnNewNote = NULL;
@@ -10,14 +10,14 @@ NvrPane::NvrPane(QWidget *parent) : QWidget(parent)
     GLOBAL_FUNC_RUN
 }
 
-void NvrPane::OnItemClicked(QListWidgetItem *item)
+void NavPane::OnItemClicked(QListWidgetItem *item)
 {
     int nId = item->data(Qt::UserRole).toInt();
 
     emit SignalIDChange(nId);
 }
 
-void NvrPane::AddItem(QListWidgetItem *item, QString strName, QChar icon)
+void NavPane::AddItem(QListWidgetItem *item, QString strName, QChar icon)
 {
     QWidget *pItemWidget = new QWidget(m_listNav);
     QLabel *pLabelIcon = new QLabel(pItemWidget);
@@ -37,19 +37,19 @@ void NvrPane::AddItem(QListWidgetItem *item, QString strName, QChar icon)
     m_listNav->setItemWidget(item, pItemWidget);
 }
 
-void NvrPane::OnBtnNewClicked()
+void NavPane::OnBtnNewClicked()
 {
     emit SignalNewNote();
 }
 
-void NvrPane::CreateAllChildWnd()
+void NavPane::CreateAllChildWnd()
 {
     NEW_OBJECT(m_labelLogo, QLabel);
     NEW_OBJECT(m_btnNewNote, QPushButton);
     NEW_OBJECT(m_listNav, QListWidget);
 }
 
-void NvrPane::InitCtrl()
+void NavPane::InitCtrl()
 {
     setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
     setProperty("form", "NvrPane");
@@ -97,13 +97,13 @@ void NvrPane::InitCtrl()
 
 }
 
-void NvrPane::InitSolts()
+void NavPane::InitSolts()
 {
     connect(m_listNav, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(OnItemClicked(QListWidgetItem*)));
     connect(m_btnNewNote, SIGNAL(clicked()), this, SLOT(OnBtnNewClicked()));
 }
 
-void NvrPane::Relayout()
+void NavPane::Relayout()
 {
     QHBoxLayout *layoutLogo = new QHBoxLayout();
     layoutLogo->addStretch();

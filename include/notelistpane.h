@@ -24,6 +24,7 @@ private slots:
     void OnCurrentRowChanged(int currentRow);
     void OnItemDoubleClicked(QListWidgetItem *item);
     void OnBtnBackClicked();
+    void OnBtnAddFolderClicked();
 
     void OnTitleChange(const QString &strTitle);
     void OnUpdateList();
@@ -40,6 +41,7 @@ signals:
 private:
     QPushButton *m_btnBack;
     QLineEdit *m_editSearch;
+    QPushButton *m_btnAddFolder;
 
     QListWidget *m_listNoteItems;
 

@@ -30,20 +30,24 @@ INCLUDEPATH += include
 SOURCES += source/main.cpp\
     source/datamgr.cpp \
     source/mainwnd.cpp \
-    source/nvrpane.cpp \
     source/notelistpane.cpp \
     source/noteviewpane.cpp \
     source/noteitem.cpp \
-    source/about.cpp
+    source/about.cpp \
+    source/navpane.cpp \
+    source/addfolder.cpp \
+    source/popconfirm.cpp
 
 HEADERS  += include/mainwnd.h \
     include/datamgr.h \
-    include/nvrpane.h \
     include/notelistpane.h \
     include/noteviewpane.h \
     include/global.h \
     include/noteitem.h \
-    include/about.h
+    include/about.h \
+    include/navpane.h \
+    include/addfolder.h \
+    include/popconfirm.h
 
 unix|win32: LIBS += -L$$PWD/lib/ -lBasicSdk
 

@@ -45,6 +45,9 @@ public:
     bool DelNote(int nId);
     bool FavoriteNote(int nId, bool bFavorite);
 
+    bool NewFolder(int nFId, QString strName);
+    bool DelFolder(int nId);
+
 signals:
     void SignalNoteListChange();
 

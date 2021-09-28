@@ -5,11 +5,8 @@
 
 #include "global.h"
 
-namespace Ui {
-class MainWnd;
-}
 
-class NvrPane;
+class NavPane;
 class NoteListPane;
 class NoteViewPane;
 
@@ -30,10 +27,8 @@ private:
     void closeEvent(QCloseEvent *event);
 
 private:
-    Ui::MainWnd *ui;
-
     QWidget *m_pMainPane;
-    NvrPane *m_pNvrPane;
+    NavPane *m_pNvrPane;
     NoteListPane *m_pNoteListPane;
     NoteViewPane *m_pNoteViewPane;
 
