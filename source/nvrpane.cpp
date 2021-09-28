@@ -28,6 +28,7 @@ void NvrPane::AddItem(QListWidgetItem *item, QString strName, QChar icon)
     pLabelIcon->setProperty("navbtnicon", true);
 
     pLabelTitle->setText(strName);
+    pLabelTitle->setProperty("navbtntitle", true);
 
     QHBoxLayout *layoutMain = new QHBoxLayout(pItemWidget);
     layoutMain->addWidget(pLabelIcon);
@@ -88,7 +89,7 @@ void NvrPane::InitCtrl()
     m_listNav->addItem(item4);
     AddItem(item4, tr("回收站"), QChar(0xe724));
 
-    QTimer::singleShot(500, this, [=]()
+    QTimer::singleShot(1000, this, [=]()
     {
         m_listNav->setCurrentItem(item2);
         emit SignalIDChange(DEFAULT);

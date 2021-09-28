@@ -84,6 +84,23 @@ void DataMgr::InitDB()
     {
         qDebug() << "Table created!";
     }
+
+    // 触发器
+    create_sql = "CREATE TRIGGER noteinfo_md AFTER UPDATE OF TITLE, CONTENT \
+            ON noteinfo \
+            BEGIN \
+               UPDATE noteinfo SET TIME = datetime( 'now', 'localtime' ) WHERE ID = new.ID; \
+            END;";
+
+    sql_query.prepare(create_sql);
+    if(!sql_query.exec())
+    {
+        qDebug() << "Error: Fail to create table." << sql_query.lastError();
+    }
+    else
+    {
+        qDebug() << "触发器 created!";
+    }
 }
 
 QList<TUserCustomItem> DataMgr::GetUserCustomItem()

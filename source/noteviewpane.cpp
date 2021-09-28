@@ -66,7 +66,7 @@ void NoteViewPane::InitCtrl()
     webSetting->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     webSetting->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     webSetting->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
-    m_webView->load(QUrl("qrc:/html/html/index.html"));
+    m_webView->load(QUrl("qrc:/edit/index.html"));
 
     // 注册一个qtui对象  html端通过此名称向qt端发送消息
     m_pWebChannel->registerObject(QString("qtui"), this);

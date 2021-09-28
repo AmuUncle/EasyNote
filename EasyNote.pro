@@ -14,6 +14,8 @@ TARGET = EasyNote
 TEMPLATE = app
 DESTDIR = bin
 
+CONFIG += resources_big
+
 unix:UI_DIR = ../tmp/ui
 win32:UI_DIR = tmp/ui
 

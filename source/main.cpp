@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     Load(":/img/font/iconfont.ttf");
 
     //加载样式表
-    QFile file(":/css/css/youdao.css");
+    QFile file(":/css/css/flatui.css");
     if (file.open(QFile::ReadOnly))
     {
         QString qss = QLatin1String(file.readAll());
