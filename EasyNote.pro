@@ -38,7 +38,8 @@ SOURCES += source/main.cpp\
     source/addfolder.cpp \
     source/popconfirm.cpp \
     source/login.cpp \
-    source/setpwddlg.cpp
+    source/setpwddlg.cpp \
+    source/messagebox.cpp
 
 HEADERS  += include/mainwnd.h \
     include/datamgr.h \
@@ -51,7 +52,8 @@ HEADERS  += include/mainwnd.h \
     include/addfolder.h \
     include/popconfirm.h \
     include/login.h \
-    include/setpwddlg.h
+    include/setpwddlg.h \
+    include/messagebox.h
 
 unix|win32: LIBS += -L$$PWD/lib/ -lBasicSdk
 

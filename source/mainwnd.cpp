@@ -20,6 +20,7 @@ MainWnd::MainWnd(QWidget *parent) :
     m_pNoteViewPane = NULL;
 
     GLOBAL_FUNC_RUN
+    CANMOVE
 
     InitMainPaneLayout();
 
@@ -51,7 +52,7 @@ void MainWnd::InitCtrl()
 {
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint);
     setFixedSize(1366, 768);
-    setProperty("canMove", "true");
+
     setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
     setAttribute(Qt::WA_TranslucentBackground, true);
     setProperty("form", "mainpane");

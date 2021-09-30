@@ -14,6 +14,7 @@
         <file>img/logo.png</file>
         <file>font/iconfont.ttf</file>
         <file>img/empty.png</file>
+        <file>img/warning.png</file>
     </qresource>
     <qresource prefix="/html">
         <file>html/index.html</file>
@@ -210,5 +211,6 @@
         <file>edit/index.html</file>
         <file>edit/qwebchannel.js</file>
         <file>edit/umeditor.config.js</file>
+        <file>edit/water.js</file>
     </qresource>
 </RCC>

@@ -11,12 +11,14 @@ Login::Login(QWidget *parent) : QDialog(parent)
     m_btnCancel = NULL;
     m_labelTitle = NULL;
     m_labelLogo = NULL;
+    m_labelLogoName = NULL;
 
     setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::Dialog));
     setAttribute(Qt::WA_TranslucentBackground, true);
     setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
 
     GLOBAL_FUNC_RUN
+    CANMOVE
 }
 
 
@@ -28,6 +30,7 @@ void Login::CreateAllChildWnd()
     NEW_OBJECT(m_btnOk, QPushButton);
     NEW_OBJECT(m_btnCancel, QPushButton);
     NEW_OBJECT(m_labelTitle, QLabel);
+    NEW_OBJECT(m_labelLogoName, QLabel);
 }
 
 void Login::InitCtrl()
@@ -40,6 +43,9 @@ void Login::InitCtrl()
     m_labelLogo->setPixmap(QPixmap::fromImage(img.scaled(m_labelLogo->size(),
                                                          Qt::IgnoreAspectRatio,
                                                          Qt::SmoothTransformation)));
+
+    m_labelLogoName->setText(tr("简笔记"));
+    m_labelLogoName->setAlignment(Qt::AlignCenter);
 
     QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
     shadow_effect->setOffset(0, 0);
@@ -88,7 +94,9 @@ void Login::Relayout()
     QVBoxLayout *logoHLayout = new QVBoxLayout();
     logoHLayout->addStretch();
     logoHLayout->addWidget(m_labelLogo);
+    logoHLayout->addWidget(m_labelLogoName);
     logoHLayout->addStretch();
+    logoHLayout->setSpacing(6);
 
     QHBoxLayout *btnHLayout = new QHBoxLayout();
     btnHLayout->addStretch();
@@ -105,10 +113,10 @@ void Login::Relayout()
     mainHLayout->setSpacing(8);
 
     QHBoxLayout *mainLayout1 = new QHBoxLayout(m_widgetMain);
-    mainLayout1->addWidget(m_labelLogo);
+    mainLayout1->addLayout(logoHLayout);
     mainLayout1->addLayout(mainHLayout);
     mainLayout1->setSpacing(20);
-
+    mainLayout1->setMargin(20);
 
     QVBoxLayout *layoutMain = new QVBoxLayout(this);
     layoutMain->addWidget(m_widgetMain);

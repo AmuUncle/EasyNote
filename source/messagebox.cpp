@@ -1,12 +1,14 @@
-﻿#include "about.h"
+﻿#include "messagebox.h"
 
-About::About(QWidget *parent) :
-    QDialog(parent)
+QMessageBoxEx::QMessageBoxEx(bool bTipMode, QWidget *parent) : QDialog(parent)
 {
     m_widgetMain = NULL;
     m_labelLogo = NULL;
-    m_labelVersion = NULL;
+    m_labelTitle = NULL;
     m_btnOk = NULL;
+    m_btnCancel = NULL;
+
+    m_bTipMode = bTipMode;
 
     setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::Dialog));
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -16,20 +18,22 @@ About::About(QWidget *parent) :
     CANMOVE
 }
 
-About::~About()
+void QMessageBoxEx::setText(QString strText)
 {
-
+   m_labelTitle->setText(strText);
 }
 
-void About::CreateAllChildWnd()
+
+void QMessageBoxEx::CreateAllChildWnd()
 {
     NEW_OBJECT(m_widgetMain, QWidget);
     NEW_OBJECT(m_labelLogo, QLabel);
-    NEW_OBJECT(m_labelVersion, QLabel);
+    NEW_OBJECT(m_labelTitle, QLabel);
     NEW_OBJECT(m_btnOk, QPushButton);
+    NEW_OBJECT(m_btnCancel, QPushButton);
 }
 
-void About::InitCtrl()
+void QMessageBoxEx::InitCtrl()
 {
     setFixedSize(400, 250);
     m_widgetMain->setProperty("form", "About");
@@ -40,29 +44,39 @@ void About::InitCtrl()
     shadow_effect->setBlurRadius(10);
     m_widgetMain->setGraphicsEffect(shadow_effect);
 
-    m_labelLogo->setFixedSize(50, 50);
-    m_labelVersion->setAlignment(Qt::AlignCenter);
+    m_labelLogo->setFixedSize(64, 64);
+    m_labelTitle->setAlignment(Qt::AlignCenter);
+
+    m_btnCancel->setFixedSize(100, 30);
+    m_btnCancel->setText(tr("取消"));
+    m_btnCancel->setProperty("default_btn", true);
 
     m_btnOk->setFixedSize(100, 30);
     m_btnOk->setText(tr("确认"));
     m_btnOk->setProperty("default_btn", true);
 
-    QImage img(":/img/img/logo.png");
+    QImage img(":/img/img/warning.png");
     m_labelLogo->setPixmap(QPixmap::fromImage(img.scaled(m_labelLogo->size(),
                                                          Qt::IgnoreAspectRatio,
                                                          Qt::SmoothTransformation)));
-    m_labelVersion->setText(QString(tr("简笔记 %1 \n designed by %3(%2)\n 邮箱: %4").arg(VERSION).arg(__DATE__).arg(AUTHOR).arg(MAIL)));
+
+    m_btnCancel->setVisible(!m_bTipMode);
 }
 
-void About::InitSolts()
+void QMessageBoxEx::InitSolts()
 {
     connect(m_btnOk, &QPushButton::clicked, [=]()
     {
-        close();
+        done(QMessageBox::Yes);
+    });
+
+    connect(m_btnCancel, &QPushButton::clicked, [=]()
+    {
+        done(QMessageBox::No);
     });
 }
 
-void About::Relayout()
+void QMessageBoxEx::Relayout()
 {
     QHBoxLayout *logoHLayout = new QHBoxLayout();
     logoHLayout->addStretch();
@@ -71,13 +85,14 @@ void About::Relayout()
 
     QHBoxLayout *btnHLayout = new QHBoxLayout();
     btnHLayout->addStretch();
+    btnHLayout->addWidget(m_btnCancel);
     btnHLayout->addWidget(m_btnOk);
     btnHLayout->addStretch();
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->addLayout(logoHLayout);
     mainLayout->addStretch();
-    mainLayout->addWidget(m_labelVersion);
+    mainLayout->addWidget(m_labelTitle);
     mainLayout->addStretch();
     mainLayout->addLayout(btnHLayout);
     mainLayout->setMargin(10);

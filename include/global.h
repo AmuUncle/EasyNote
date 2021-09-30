@@ -38,6 +38,8 @@
     if (NULL == pObj) { pObj = new TYPE(this); }
 
 
+#define CANMOVE setProperty("canMove", "true");
+
 enum NavItem
 {
     DEFAULT = 0,

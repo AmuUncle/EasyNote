@@ -1,15 +1,16 @@
-﻿#ifndef LOGIN_H
-#define LOGIN_H
+﻿#ifndef MESSAGEBOX_H
+#define MESSAGEBOX_H
 
 #include <QWidget>
 #include "global.h"
 
-
-class Login : public QDialog
+class QMessageBoxEx : public QDialog
 {
     Q_OBJECT
 public:
-    explicit Login(QWidget *parent = 0);
+    explicit QMessageBoxEx(bool bTipMode = true, QWidget *parent = 0);
+
+    void setText(QString strText);
 
 private:
     GLOBAL_FUNC
@@ -17,11 +18,11 @@ private:
 private:
     QWidget *m_widgetMain;
     QLabel *m_labelLogo;
-    QLabel *m_labelLogoName;
     QLabel *m_labelTitle;
-    QLineEdit *m_editPwd;
     QPushButton *m_btnCancel;
     QPushButton *m_btnOk;
+
+    bool m_bTipMode;
 };
 
-#endif // LOGIN_H
+#endif // MESSAGEBOX_H

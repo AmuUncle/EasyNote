@@ -13,6 +13,7 @@ AddFolder::AddFolder(QWidget *parent) : QDialog(parent)
     setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
 
     GLOBAL_FUNC_RUN
+    CANMOVE
 }
 
 
@@ -27,7 +28,7 @@ void AddFolder::CreateAllChildWnd()
 
 void AddFolder::InitCtrl()
 {
-    setFixedSize(330, 180);
+    setFixedSize(330, 200);
     m_widgetMain->setProperty("form", "About");
 
     QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
@@ -78,6 +79,7 @@ void AddFolder::Relayout()
     mainHLayout->addWidget(m_editName);
     mainHLayout->addLayout(btnHLayout);
     mainHLayout->setSpacing(8);
+    mainHLayout->setMargin(20);
 
     QVBoxLayout *layoutMain = new QVBoxLayout(this);
     layoutMain->addWidget(m_widgetMain);

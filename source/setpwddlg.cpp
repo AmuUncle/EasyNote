@@ -19,6 +19,7 @@ SetPwdDlg::SetPwdDlg(QWidget *parent) : QDialog(parent)
     setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
 
     GLOBAL_FUNC_RUN
+    CANMOVE
 }
 
 
@@ -37,7 +38,7 @@ void SetPwdDlg::CreateAllChildWnd()
 
 void SetPwdDlg::InitCtrl()
 {
-    m_widgetMain->setFixedSize(360, 150);
+    m_widgetMain->setFixedSize(380, 180);
     m_widgetMain->setProperty("form", "About");
 
     QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
@@ -101,6 +102,9 @@ void SetPwdDlg::InitSolts()
 
     connect(m_btnClear, &QPushButton::clicked, [=]()
     {
+        if (QMessageBox::Yes != MessageBoxExt(tr("密码清除后，启动程序将无需输入密码！")))
+            return;
+
         DATAMGR->SetPwd("");
         reject();
     });
@@ -132,7 +136,7 @@ void SetPwdDlg::Relayout()
     layoutMain1->addLayout(mainHLayout);
     layoutMain1->addStretch();
     layoutMain1->addLayout(btnHLayout);
-
+    layoutMain1->setMargin(20);
 
     QVBoxLayout *layoutMain = new QVBoxLayout(this);
     layoutMain->addWidget(m_widgetMain);

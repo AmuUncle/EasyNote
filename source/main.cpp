@@ -3,6 +3,7 @@
 
 #include "basicsdk.h"
 #include "datamgr.h"
+#include "messagebox.h"
 
 int main(int argc, char *argv[])
 {
@@ -88,20 +89,14 @@ int main(int argc, char *argv[])
 
 int MessageBoxExt(QString strText)
 {
-    QMessageBox  messagebox;
-    messagebox.setIcon(QMessageBox::Warning);
-    messagebox.setText(strText);
-    messagebox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-
-    return messagebox.exec();
+    QMessageBoxEx msg(false);
+    msg.setText(strText);
+    return msg.exec();
 }
 
 int MessageBoxTip(QString strText)
 {
-    QMessageBox  messagebox;
-    messagebox.setIcon(QMessageBox::Warning);
-    messagebox.setText(strText);
-    messagebox.setStandardButtons(QMessageBox::Yes);
-
-    return messagebox.exec();
+    QMessageBoxEx msg;
+    msg.setText(strText);
+    return msg.exec();
 }
