@@ -21,6 +21,7 @@ private:
     QLabel *m_labelPwd2;
     QLineEdit *m_editPwd2;
     QPushButton *m_btnCancel;
+    QPushButton *m_btnClear;
     QPushButton *m_btnOk;
 };
 

@@ -12,6 +12,7 @@ SetPwdDlg::SetPwdDlg(QWidget *parent) : QDialog(parent)
     m_labelPwd = NULL;
     m_labelPwd2 = NULL;
     m_editPwd2 = NULL;
+    m_btnClear = NULL;
 
     setWindowFlags(windowFlags() | (Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::Dialog));
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -27,6 +28,7 @@ void SetPwdDlg::CreateAllChildWnd()
     NEW_OBJECT(m_labelTitle, QLabel);
     NEW_OBJECT(m_editPwd, QLineEdit);
     NEW_OBJECT(m_btnOk, QPushButton);
+    NEW_OBJECT(m_btnClear, QPushButton);
     NEW_OBJECT(m_btnCancel, QPushButton);
     NEW_OBJECT(m_labelPwd, QLabel);
     NEW_OBJECT(m_editPwd2, QLineEdit);
@@ -61,6 +63,10 @@ void SetPwdDlg::InitCtrl()
     m_btnOk->setText(tr("确认"));
     m_btnOk->setProperty("default_btn", true);
 
+    m_btnClear->setFixedSize(100, 30);
+    m_btnClear->setText(tr("清除密码"));
+    m_btnClear->setProperty("default_btn", true);
+
     m_btnOk->setDefault(true);
 }
 
@@ -93,6 +99,12 @@ void SetPwdDlg::InitSolts()
         }
     });
 
+    connect(m_btnClear, &QPushButton::clicked, [=]()
+    {
+        DATAMGR->SetPwd("");
+        reject();
+    });
+
     connect(m_btnCancel, &QPushButton::clicked, [=]()
     {
         reject();
@@ -104,6 +116,7 @@ void SetPwdDlg::Relayout()
     QHBoxLayout *btnHLayout = new QHBoxLayout();
     btnHLayout->addStretch();
     btnHLayout->addWidget(m_btnCancel);
+    btnHLayout->addWidget(m_btnClear);
     btnHLayout->addWidget(m_btnOk);
 
     QGridLayout *mainHLayout = new QGridLayout();
