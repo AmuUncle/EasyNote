@@ -209,6 +209,11 @@ QWidget[form="About"]
     background: #2a374e;
 }
 
+QWidget[form="About"] QLineEdit
+{
+	padding: 2 2px;
+}
+
 QPushButton[default_btn="true"] {
 	background: #6656F5;
 	color: #fff;
