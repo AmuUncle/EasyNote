@@ -27,32 +27,36 @@
 
 # 🗺️软件展示
 
-### 首次使用
-![首次使用](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/首次使用.png)
+### 登录
+![登录](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/1.gif)
 
-### 最近文档
-![最近文档](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/最近文档.png)
+### 新建文档
+![新建文档](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/2.gif)
 
-### 子分类
-![子分类](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/子分类.png)
+### 最近文档、收藏夹、回收站
+![最近文档、收藏夹、回收站](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/3.gif)
 
 ### 删除文档
-![删除文档](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/删除文档.png)
+![删除文档](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/4.gif)
 
-### 收藏
-![收藏](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/收藏.png)
+### 还原文档
+![还原文档](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/5.gif)
 
-### 收藏夹
-![收藏夹](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/收藏夹.png)
+### 新建文件夹
+![新建文件夹](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/6.gif)
 
-### 回收站
-![回收站](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/回收站.png)
+### 切换文件夹
+![### 切换文件夹](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/7.gif)
 
-### 还原
-![还原](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/还原.png)
+### 切换主题
+![切换主题](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/8.gif)
 
-### 全局搜索
-![全局搜索](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/全局搜索.png)
+### 设置登录密码
+![设置登录密码](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/9.gif)
+
+### 关于
+![关于](https://gitee.com/hudejie/EasyNote/raw/master/screenshot/gif/10.gif)
+
 
 # 📝参考网址
 
