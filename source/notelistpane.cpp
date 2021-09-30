@@ -10,11 +10,13 @@ NoteListPane::NoteListPane(QWidget *parent) : QWidget(parent)
     m_editSearch = NULL;
     m_listNoteItems = NULL;
     m_btnAddFolder = NULL;
+    m_btnClear = NULL;
 
     m_nId = 0;
     m_bGroupMode = false;
 
     GLOBAL_FUNC_RUN
+    UpdateCtrlStatus();
 }
 
 void NoteListPane::OnIdChange(int nId)
@@ -122,6 +124,8 @@ void NoteListPane::OnIdChange(int nId)
         if (0 == m_listNoteItems->count())
             emit SignalSelGroup();
     }
+
+    UpdateCtrlStatus();
 }
 
 void NoteListPane::OnCurrentRowChanged(int currentRow)
@@ -183,6 +187,14 @@ void NoteListPane::OnBtnAddFolderClicked()
     if (QDialog::Accepted == dlg.exec())
     {
         DATAMGR->NewFolder(m_nId, dlg.GetName());
+    }
+}
+
+void NoteListPane::OnBtnClearClicked()
+{
+    if (QMessageBox::Yes == MessageBoxExt(tr("是否确认清空回收站？")))
+    {
+        DATAMGR->ClearDeleted();
     }
 }
 
@@ -255,6 +267,7 @@ void NoteListPane::CreateAllChildWnd()
     NEW_OBJECT(m_editSearch, QLineEdit);
     NEW_OBJECT(m_listNoteItems, QListWidget);
     NEW_OBJECT(m_btnAddFolder, QPushButton);
+    NEW_OBJECT(m_btnClear, QPushButton);
 }
 
 void NoteListPane::InitCtrl()
@@ -264,13 +277,16 @@ void NoteListPane::InitCtrl()
     setFixedWidth(260);
 
     m_btnBack->setFixedSize(38, 38);
-    SetIcon(m_btnBack, QChar(0xe6f4));
+    SetIcon(m_btnBack, QChar(0xe64e));
 
     m_editSearch->setFixedHeight(38);
     m_editSearch->setPlaceholderText(tr("请输入搜索内容"));
 
     m_btnAddFolder->setFixedSize(38, 38);
     SetIcon(m_btnAddFolder, QChar(0xe695));
+
+    m_btnClear->setFixedSize(38, 38);
+    SetIcon(m_btnClear, QChar(0xe639));
 
     QPushButton *btnClear = new QPushButton(this);
     SetIcon(btnClear, QChar(0xe837));
@@ -298,6 +314,7 @@ void NoteListPane::InitSolts()
 
     connect(m_btnBack, SIGNAL(clicked()), this, SLOT(OnBtnBackClicked()));
     connect(m_btnAddFolder, SIGNAL(clicked()), this, SLOT(OnBtnAddFolderClicked()));
+    connect(m_btnClear, SIGNAL(clicked()), this, SLOT(OnBtnClearClicked()));
 
     connect(m_editSearch, SIGNAL(textChanged(const QString &)), this, SLOT(Serach(const QString &)));
     connect(m_listNoteItems, SIGNAL(currentRowChanged(int)), this, SLOT(OnCurrentRowChanged(int)));
@@ -310,6 +327,7 @@ void NoteListPane::Relayout()
     layoutSearch->addWidget(m_btnBack);
     layoutSearch->addWidget(m_editSearch);
     layoutSearch->addWidget(m_btnAddFolder);
+    layoutSearch->addWidget(m_btnClear);
     layoutSearch->setMargin(4);
     layoutSearch->setSpacing(0);
 
@@ -344,4 +362,19 @@ void NoteListPane::AddItem(QListWidgetItem *item, QString strName, QChar icon, Q
     layoutMain->addWidget(pLabelTime);
     layoutMain->setContentsMargins(0, 0, 10, 0);
     m_listNoteItems->setItemWidget(item, pItemWidget);
+}
+
+void NoteListPane::UpdateCtrlStatus()
+{
+    m_btnAddFolder->hide();
+    m_btnClear->hide();
+
+    if (m_nId < RECENT)
+    {
+        m_btnAddFolder->show();
+    }
+    else if (DELETED == m_nId)
+    {
+        m_btnClear->show();
+    }
 }

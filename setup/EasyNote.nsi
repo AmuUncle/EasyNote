@@ -7,9 +7,9 @@
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "EasyNote"
 !define PRODUCT_DISPLAY_NAME "EasyNote"
-!define PRODUCT_VERSION "v8.1"
-!define PRODUCT_PUBLISHER "Kedacom"
-!define PRODUCT_WEB_SITE "http://www.kedacom.com"
+!define PRODUCT_VERSION "v1.1"
+!define PRODUCT_PUBLISHER "hudejie"
+!define PRODUCT_WEB_SITE "http://www.hudejie.top"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"

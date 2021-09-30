@@ -44,9 +44,17 @@ public:
     bool RemoveNote(int nId, bool bDeleted = true);
     bool DelNote(int nId);
     bool FavoriteNote(int nId, bool bFavorite);
+    bool ClearDeleted();
 
     bool NewFolder(int nFId, QString strName);
     bool DelFolder(int nId);
+
+    MenuType GetTheme();
+    void SetTheme(MenuType eTheme);
+
+    bool CheckPwd(QString strPwd);
+    bool SetPwd(QString strPwd);
+    bool HasPwd();
 
 signals:
     void SignalNoteListChange();

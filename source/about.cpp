@@ -43,16 +43,14 @@ void About::InitCtrl()
     m_labelVersion->setAlignment(Qt::AlignCenter);
 
     m_btnOk->setFixedSize(100, 30);
-
-
     m_btnOk->setText(tr("确认"));
-    m_btnOk->setProperty("default", true);
+    m_btnOk->setProperty("default_btn", true);
 
     QImage img(":/img/img/logo.png");
     m_labelLogo->setPixmap(QPixmap::fromImage(img.scaled(m_labelLogo->size(),
                                                          Qt::IgnoreAspectRatio,
                                                          Qt::SmoothTransformation)));
-    m_labelVersion->setText(QString(tr("简笔记 %1 \n designed by 阿木大叔(%2)").arg(VERSION).arg(__DATE__)));
+    m_labelVersion->setText(QString(tr("简笔记 %1 \n designed by %3(%2)\n 邮箱: %4").arg(VERSION).arg(__DATE__).arg(AUTHOR).arg(MAIL)));
 }
 
 void About::InitSolts()

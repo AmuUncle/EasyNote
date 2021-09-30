@@ -19,9 +19,9 @@ CONFIG += resources_big
 unix:UI_DIR = ../tmp/ui
 win32:UI_DIR = tmp/ui
 
-CONFIG(release, debug|release){
-    DEFINES += QT_NO_WARNING_OUTPUT QT_NO_DEBUG_OUTPUT
-}
+#CONFIG(release, debug|release){
+#    DEFINES += QT_NO_WARNING_OUTPUT QT_NO_DEBUG_OUTPUT
+#}
 
 win32:QMAKE_LFLAGS_WINDOWS += /LARGEADDRESSAWARE
 
@@ -36,7 +36,9 @@ SOURCES += source/main.cpp\
     source/about.cpp \
     source/navpane.cpp \
     source/addfolder.cpp \
-    source/popconfirm.cpp
+    source/popconfirm.cpp \
+    source/login.cpp \
+    source/setpwddlg.cpp
 
 HEADERS  += include/mainwnd.h \
     include/datamgr.h \
@@ -47,7 +49,9 @@ HEADERS  += include/mainwnd.h \
     include/about.h \
     include/navpane.h \
     include/addfolder.h \
-    include/popconfirm.h
+    include/popconfirm.h \
+    include/login.h \
+    include/setpwddlg.h
 
 unix|win32: LIBS += -L$$PWD/lib/ -lBasicSdk
 
@@ -59,4 +63,3 @@ RESOURCES += \
 
 RC_FILE +=  \
     res/icon.rc
-

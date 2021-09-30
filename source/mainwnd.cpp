@@ -4,6 +4,10 @@
 #include "notelistpane.h"
 #include "noteviewpane.h"
 #include "about.h"
+#include "login.h"
+#include "setpwddlg.h"
+
+#define STANDBY_TRIGGER_TIME  10 * 60 * 1000     // 鼠标无操作，自动进入锁定界面
 
 MainWnd::MainWnd(QWidget *parent) :
     QWidget(parent)
@@ -18,6 +22,7 @@ MainWnd::MainWnd(QWidget *parent) :
     GLOBAL_FUNC_RUN
 
     InitMainPaneLayout();
+
 }
 
 MainWnd::~MainWnd()
@@ -53,6 +58,19 @@ void MainWnd::InitCtrl()
 
     m_pMainPane->setAttribute(Qt::WA_StyledBackground);  // 禁止父窗口样式影响子控件样式
     m_pMainPane->setProperty("form", "mainpane");
+
+    qApp->installEventFilter(this);
+
+    m_timeMouseTrigger = QTime::currentTime();
+
+    m_pMouseWatcher = new QTimer(this);
+    connect(m_pMouseWatcher, &QTimer::timeout, [=]()
+    {
+        if (!m_timeMouseTrigger.isNull() && qAbs(m_timeMouseTrigger.msecsTo(QTime::currentTime())) > STANDBY_TRIGGER_TIME)
+            PreLogin();
+    });
+
+    m_pMouseWatcher->start(1000);
 }
 
 void MainWnd::InitSolts()
@@ -91,7 +109,6 @@ void MainWnd::InitSolts()
 
         case MENUTYPE_ABOUT:
             {
-
                 About dlg(this);
                 dlg.exec();
             }
@@ -99,6 +116,14 @@ void MainWnd::InitSolts()
 
         case MENUTYPE_CLOSE:
             close();
+            break;
+
+        case MENUTYPE_SETPWD:
+            {
+
+                SetPwdDlg dlg(this);
+                dlg.exec();
+            }
             break;
 
         case MENUITEM_THEME_DEFAULT:
@@ -111,6 +136,8 @@ void MainWnd::InitSolts()
                     qApp->setPalette(QPalette(QColor(paletteColor)));
                     qApp->setStyleSheet(qss);
                     file.close();
+
+                    DATAMGR->SetTheme(eType);
                 }
             }
             break;
@@ -125,6 +152,8 @@ void MainWnd::InitSolts()
                     qApp->setPalette(QPalette(QColor(paletteColor)));
                     qApp->setStyleSheet(qss);
                     file.close();
+
+                    DATAMGR->SetTheme(eType);
                 }
             }
             break;
@@ -139,6 +168,24 @@ void MainWnd::InitSolts()
                     qApp->setPalette(QPalette(QColor(paletteColor)));
                     qApp->setStyleSheet(qss);
                     file.close();
+
+                    DATAMGR->SetTheme(eType);
+                }
+            }
+            break;
+
+        case MENUITEM_THEME_SIPMPLE:
+            {
+                QFile file(":/css/css/simple.css");
+                if (file.open(QFile::ReadOnly))
+                {
+                    QString qss = QLatin1String(file.readAll());
+                    QString paletteColor = qss.mid(20, 7);
+                    qApp->setPalette(QPalette(QColor(paletteColor)));
+                    qApp->setStyleSheet(qss);
+                    file.close();
+
+                    DATAMGR->SetTheme(eType);
                 }
             }
             break;
@@ -166,7 +213,43 @@ void MainWnd::closeEvent(QCloseEvent *event)
     }
     else{
         event->accept();
+        exit(0);
     }
+}
+
+bool MainWnd::eventFilter(QObject *obj, QEvent *evt)
+{
+    switch (evt->type())
+    {
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseButtonDblClick:
+        case QEvent::MouseMove:
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
+        case QEvent::Move:
+        {
+            m_timeMouseTrigger = QTime::currentTime();
+        }
+        break;
+    }
+
+    return QObject::eventFilter(obj, evt);
+}
+
+void MainWnd::PreLogin()
+{
+    if (DATAMGR->HasPwd())
+    {
+        hide();
+        m_pMouseWatcher->stop();
+
+        Login dlg;
+        dlg.exec();
+    }
+
+    show();
+    m_pMouseWatcher->start(1000);
 }
 
 

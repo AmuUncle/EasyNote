@@ -62,6 +62,8 @@ void NoteViewPane::InitCtrl()
     SetIcon(m_btnClose, QChar(0xe837), 20);
     SetIcon(m_btnAbout, QChar(0xe8c4), 20);
 
+    m_webView->setContextMenuPolicy(Qt::NoContextMenu);
+
     QWebEngineSettings *webSetting = QWebEngineSettings::globalSettings();
     webSetting->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     webSetting->setAttribute(QWebEngineSettings::PluginsEnabled, true);
@@ -181,20 +183,26 @@ void NoteViewPane::OnBtnMoreClicked()
     pGoOffwork->setData(MENUITEM_THEME_FLATUI);
     QAction *pGoOffwork2 = new QAction(tr("ps"), pMenu);
     pGoOffwork2->setData(MENUITEM_THEME_PS);
+    QAction *pGoOffwork3 = new QAction(tr("简单"), pMenu);
+    pGoOffwork3->setData(MENUITEM_THEME_SIPMPLE);
 
     QMenu *pChildRest = new QMenu(pMenu);
     pChildRest->setTitle(tr("主题"));
     pChildRest->addAction(pRest);
     pChildRest->addAction(pGoOffwork);
     pChildRest->addAction(pGoOffwork2);
+    pChildRest->addAction(pGoOffwork3);
 
     QAction *pMsgMgr = new QAction(tr("关于"), pMenu);
     pMsgMgr->setData(MENUTYPE_ABOUT);
 
+    QAction *pMsgPwd = new QAction(tr("设置密码"), pMenu);
+    pMsgPwd->setData(MENUTYPE_SETPWD);
+
     //把QAction对象添加到菜单上
     pMenu->addMenu(pChildRest);
+    pMenu->addAction(pMsgPwd);
     pMenu->addAction(pMsgMgr);
-
 
     connect(pMenu, SIGNAL(triggered(QAction*)), this, SLOT(OnMenuTriggered(QAction*)));
 

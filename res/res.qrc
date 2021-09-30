@@ -4,6 +4,7 @@
         <file>css/ps.css</file>
         <file>css/style.css</file>
         <file>css/youdao.css</file>
+        <file>css/simple.css</file>
     </qresource>
     <qresource prefix="/img">
         <file>img/down.png</file>

@@ -84,6 +84,32 @@ void DataMgr::InitDB()
         qDebug() << "Table created!";
     }
 
+    strSql = "CREATE TABLE localcfg ( \
+                THEME INTEGER  NOT NULL default 100, \
+                PWD TEXT)";
+
+    sqlQuery.prepare(strSql);
+    if(!sqlQuery.exec())
+    {
+        qDebug() << "Error: Fail to create table. localcfg" << sqlQuery.lastError();
+    }
+    else
+    {
+        qDebug() << "Table created!";
+
+        strSql = QString("INSERT INTO localcfg (THEME) VALUES (100);");
+        sqlQuery.prepare(strSql);
+        qDebug() << strSql;
+        if(!sqlQuery.exec())
+        {
+            qDebug() << "Error: Fail to create table." << sqlQuery.lastError();
+        }
+        else
+        {
+            qDebug() << "Table created!";
+        }
+    }
+
     // 触发器
     strSql = "CREATE TRIGGER noteinfo_md AFTER UPDATE OF TITLE, CONTENT \
             ON noteinfo \
@@ -107,8 +133,8 @@ QList<TUserCustomItem> DataMgr::GetUserCustomItem()
     QList<TUserCustomItem> list;
 
     QSqlQuery sqlQuery;
-    QString select_sql = "select ID, NAME from nav where FID == 0;";
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = "select ID, NAME from nav where FID == 0;";
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -133,9 +159,9 @@ QList<TUserCustomItem> DataMgr::GetUserCustomChildItem(int nFId)
     QList<TUserCustomItem> list;
 
     QSqlQuery sqlQuery;
-    QString select_sql = QString("select ID, NAME from nav where FID == %1;").arg(nFId);
-    qDebug() << select_sql;
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = QString("select ID, NAME from nav where FID == %1;").arg(nFId);
+    qDebug() << strSql;
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -160,8 +186,8 @@ QList<TNoteItem> DataMgr::GetUserCustomChildNote(int nFId)
     QList<TNoteItem> list;
 
     QSqlQuery sqlQuery;
-    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED == 0 and FID == %1 ORDER BY TIME DESC;").arg(nFId);
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED == 0 and FID == %1 ORDER BY TIME DESC  limit 100;").arg(nFId);
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -188,8 +214,8 @@ QList<TNoteItem> DataMgr::GetRecent()
     QList<TNoteItem> list;
 
     QSqlQuery sqlQuery;
-    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED == 0  ORDER BY TIME DESC limit 10;");
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED == 0  ORDER BY TIME DESC limit 10;");
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -215,8 +241,8 @@ QList<TNoteItem> DataMgr::GetFavorites()
     QList<TNoteItem> list;
 
     QSqlQuery sqlQuery;
-    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where FAVORITES > 0 and DELETEED == 0 ORDER BY TIME DESC;");
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where FAVORITES > 0 and DELETEED == 0 ORDER BY TIME DESC;");
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -242,8 +268,8 @@ QList<TNoteItem> DataMgr::GetDeleted()
     QList<TNoteItem> list;
 
     QSqlQuery sqlQuery;
-    QString select_sql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED > 0 ORDER BY TIME DESC;");
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = QString("select ID, TITLE, TIME, FAVORITES from noteinfo where DELETEED > 0 ORDER BY TIME DESC;");
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -300,8 +326,8 @@ TNoteItem DataMgr::GetNote(int nId)
     TNoteItem tItem = {0};
 
     QSqlQuery sqlQuery;
-    QString select_sql = QString("select ID, TITLE, CONTENT, TIME from noteinfo where ID == %1;").arg(nId);
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = QString("select ID, TITLE, CONTENT, TIME from noteinfo where ID == %1;").arg(nId);
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -324,9 +350,9 @@ TNoteItem DataMgr::GetNote(int nId)
 int DataMgr::GetGroupFId(int nId)
 {
     QSqlQuery sqlQuery;
-    QString select_sql = QString("select FID from nav where ID == %1;").arg(nId);
-    qDebug() << select_sql;
-    if(!sqlQuery.exec(select_sql))
+    QString strSql = QString("select FID from nav where ID == %1;").arg(nId);
+    qDebug() << strSql;
+    if(!sqlQuery.exec(strSql))
     {
         qDebug()<<sqlQuery.lastError();
     }
@@ -448,6 +474,28 @@ bool DataMgr::FavoriteNote(int nId, bool bFavorite)
     return true;
 }
 
+bool DataMgr::ClearDeleted()
+{
+    QSqlQuery sqlQuery;
+    QString update_sql = QString("DELETE from noteinfo where DELETEED > 0;");
+
+    sqlQuery.prepare(update_sql);
+
+    qDebug() << update_sql;
+    if(!sqlQuery.exec())
+    {
+        qDebug()<<sqlQuery.lastError();
+    }
+    else
+    {
+        qDebug()<<"updated!";
+    }
+
+    emit SignalNoteListChange();
+
+    return true;
+}
+
 bool DataMgr::NewFolder(int nFId, QString strName)
 {
     QSqlQuery sqlQuery;
@@ -511,4 +559,103 @@ bool DataMgr::DelFolder(int nId)
     emit SignalNoteListChange();
 
     return true;
+}
+
+MenuType DataMgr::GetTheme()
+{
+    QSqlQuery sqlQuery;
+    QString strSql = QString("select THEME from localcfg limit 1;");
+    qDebug() << strSql;
+    if(!sqlQuery.exec(strSql))
+    {
+        qDebug()<<sqlQuery.lastError();
+    }
+    else
+    {
+        while(sqlQuery.next())
+        {
+            return (MenuType)sqlQuery.value(0).toInt();
+        }
+    }
+
+    return MENUITEM_THEME_DEFAULT;
+}
+
+void DataMgr::SetTheme(MenuType eTheme )
+{
+    QSqlQuery sqlQuery;
+    QString update_sql = QString("UPDATE localcfg SET THEME = %1;").arg(eTheme);
+    sqlQuery.prepare(update_sql);
+    qDebug() << update_sql;
+
+    if(!sqlQuery.exec())
+    {
+        qDebug()<<sqlQuery.lastError();
+    }
+    else
+    {
+        qDebug()<<"updated!";
+    }
+
+    return;
+}
+
+bool DataMgr::CheckPwd(QString strPwd)
+{
+    QSqlQuery sqlQuery;
+    QString strSql = QString("select PWD from localcfg limit 1;");
+    qDebug() << strSql;
+    if(!sqlQuery.exec(strSql))
+    {
+        qDebug()<<sqlQuery.lastError();
+    }
+    else
+    {
+        while(sqlQuery.next())
+        {
+           return strPwd ==  sqlQuery.value(0).toString();
+        }
+    }
+
+    return false;
+}
+
+bool DataMgr::SetPwd(QString strPwd)
+{
+    QSqlQuery sqlQuery;
+    QString update_sql = QString("UPDATE localcfg SET PWD = \"%1\";").arg(strPwd);
+    sqlQuery.prepare(update_sql);
+    qDebug() << update_sql;
+
+    if(!sqlQuery.exec())
+    {
+        qDebug()<<sqlQuery.lastError();
+        return  false;
+    }
+    else
+    {
+        qDebug()<<"updated!";
+    }
+
+    return true;
+}
+
+bool DataMgr::HasPwd()
+{
+    QSqlQuery sqlQuery;
+    QString strSql = QString("select PWD from localcfg limit 1;");
+    qDebug() << strSql;
+    if(!sqlQuery.exec(strSql))
+    {
+        qDebug()<<sqlQuery.lastError();
+    }
+    else
+    {
+        while(sqlQuery.next())
+        {
+           return sqlQuery.value(0).toString().length() > 0;
+        }
+    }
+
+    return false;
 }

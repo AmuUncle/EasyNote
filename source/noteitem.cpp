@@ -151,30 +151,22 @@ void NoteItem::InitSolts()
         {
             if (m_bRestoreMode)
             {
-                if (QMessageBox::Ok == QMessageBox::warning(this, PRJ_NAME, tr("是否确认删除？"),
-                                                    QMessageBox::Ok | QMessageBox::Cancel,
-                                                    QMessageBox::Cancel))
+                if (QMessageBox::Yes == MessageBoxExt(tr("是否确认删除？")))
                 {
                     DATAMGR->DelNote(m_tNoteIte.nId);
                 }
             }
             else
             {
-                if (QMessageBox::Ok == QMessageBox::warning(this, PRJ_NAME, tr("是否确认删除？"),
-                                                    QMessageBox::Ok | QMessageBox::Cancel,
-                                                    QMessageBox::Cancel))
+                if (QMessageBox::Yes == MessageBoxExt(tr("是否确认删除？")))
                 {
                     DATAMGR->RemoveNote(m_tNoteIte.nId);
                 }
-
-
             }
         }
         else
         {
-            if (QMessageBox::Ok == QMessageBox::warning(this, PRJ_NAME, tr("是否确认删除？"),
-                                                QMessageBox::Ok | QMessageBox::Cancel,
-                                                QMessageBox::Cancel))
+            if (QMessageBox::Yes == MessageBoxExt(tr("是否确认删除？")))
             {
                 DATAMGR->DelFolder(m_tGroupItem.nId);
             }

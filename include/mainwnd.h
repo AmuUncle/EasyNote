@@ -18,6 +18,9 @@ public:
     explicit MainWnd(QWidget *parent = 0);
     ~MainWnd();
 
+public:
+    void PreLogin();
+
 private:
     GLOBAL_FUNC
 
@@ -26,6 +29,9 @@ private:
 
     void closeEvent(QCloseEvent *event);
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *evt);
+
 private:
     QWidget *m_pMainPane;
     NavPane *m_pNvrPane;
@@ -33,6 +39,9 @@ private:
     NoteViewPane *m_pNoteViewPane;
 
     bool m_bCloseAnimationState;
+
+    QTimer *m_pMouseWatcher;
+    QTime m_timeMouseTrigger;
 };
 
 #endif // MAINWND_H

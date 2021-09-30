@@ -17,6 +17,8 @@
 #include "basicsdk.h"
 
 #define VERSION "v1.0"
+#define AUTHOR "阿木大叔"
+#define MAIL "hudejie2018@163.com"
 #define MAX_OUTPUT_SIZE 1024
 #define PRJ_NAME "EasyNote"
 
@@ -56,9 +58,11 @@ enum MenuType
     MENUTYPE_MAX,
     MENUTYPE_ABOUT,
     MENUTYPE_CLOSE,
+    MENUTYPE_SETPWD,
     MENUITEM_THEME_DEFAULT = 100,
     MENUITEM_THEME_FLATUI,
     MENUITEM_THEME_PS,
+    MENUITEM_THEME_SIPMPLE,
 };
 
 struct TUserCustomItem
@@ -77,5 +81,9 @@ struct TNoteItem
     QString strTime;
     bool bFavorited;
 };
+
+
+int MessageBoxExt(QString strText);
+int MessageBoxTip(QString strText);
 
 #endif // GLOBAL_H

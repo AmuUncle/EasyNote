@@ -18,6 +18,7 @@ private:
     GLOBAL_FUNC
 
     void AddItem(QListWidgetItem *item, QString strName, QChar icon, QString strTime);
+    void UpdateCtrlStatus();
 
 private slots:
     void OnIdChange(int nId);
@@ -25,6 +26,7 @@ private slots:
     void OnItemDoubleClicked(QListWidgetItem *item);
     void OnBtnBackClicked();
     void OnBtnAddFolderClicked();
+    void OnBtnClearClicked();
 
     void OnTitleChange(const QString &strTitle);
     void OnUpdateList();
@@ -42,6 +44,7 @@ private:
     QPushButton *m_btnBack;
     QLineEdit *m_editSearch;
     QPushButton *m_btnAddFolder;
+    QPushButton *m_btnClear;
 
     QListWidget *m_listNoteItems;
 
