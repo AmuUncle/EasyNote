@@ -1,5 +1,4 @@
 ﻿#include "unlocktool.h"
-#include "datamgr.h"
 
 const int POINT_RADIUS = 40;
 
@@ -75,14 +74,12 @@ void UnlockTool::Relayout()
     btnHLayout->addWidget(m_btnOk);
     btnHLayout->addStretch();
 
-
     QVBoxLayout *layoutMain = new QVBoxLayout(this);
     layoutMain->addStretch();
     layoutMain->addLayout(btnHLayout);
     layoutMain->setMargin(30);
     setLayout(layoutMain);
 }
-
 
 void UnlockTool::paintEvent(QPaintEvent *event)
 {
@@ -101,7 +98,6 @@ void UnlockTool::paintEvent(QPaintEvent *event)
 
 void UnlockTool::paintLookPane(QPainter *painter, QRect rcArec)
 {
-    // 原点、比例转换
     QRect rcBase = rcArec;
 
     const int POINT_BORDER = 5;
@@ -114,7 +110,7 @@ void UnlockTool::paintLookPane(QPainter *painter, QRect rcArec)
 
     QString area = QString::number(m_dwPassword);
     int nLen = area.length();
-    int anWord[9] = {0};
+    int anWord[POINT_NUM] = {0};
 
     for (int i = 0; i < nLen; i++)
     {
@@ -145,6 +141,7 @@ void UnlockTool::paintLookPane(QPainter *painter, QRect rcArec)
                {
                    painter->setBrush(clockSel);
                    painter->drawEllipse(ptCenter, POINT_RADIUS / 2, POINT_RADIUS / 2);
+                   break;
                }
            }
 
@@ -155,7 +152,7 @@ void UnlockTool::paintLookPane(QPainter *painter, QRect rcArec)
     painter->save();
     painter->setPen(QPen(clockSel, 4));
 
-    QPoint points[10];
+    QPoint points[POINT_NUM + 1];
 
     for (int i = 0; i < nLen; i++)
     {
@@ -175,14 +172,13 @@ void UnlockTool::paintLookPane(QPainter *painter, QRect rcArec)
 
 void UnlockTool::mousePressEvent(QMouseEvent *event)
 {
-    for(int i = 0; i < 9; i++)
+    for(int i = 0; i < POINT_NUM; i++)
     {
         QPoint pt1 = m_aptCenter[i];
         QPoint pt2 = event->pos();
 
-        double c = qPow(qPow(pt1.x()-pt2.x(), 2)+qPow(pt1.y()-pt2.y(), 2),0.5);
-
-        if (c <= POINT_RADIUS)
+        double dwRadius = qPow(qPow(pt1.x() - pt2.x(), 2) + qPow(pt1.y() - pt2.y(), 2),0.5);
+        if (dwRadius <= POINT_RADIUS)
         {
             m_bMousePress = true;
             m_dwPassword = i + 1;
@@ -201,14 +197,13 @@ void UnlockTool::mouseMoveEvent(QMouseEvent *event)
 
     m_ptMouseMove = event->pos();
 
-    for(int i = 0; i < 9; i++)
+    for(int i = 0; i < POINT_NUM; i++)
     {
         QPoint pt1 = m_aptCenter[i];
         QPoint pt2 = event->pos();
 
-        double c = qPow(qPow(pt1.x()-pt2.x(), 2)+qPow(pt1.y()-pt2.y(), 2),0.5);
-
-        if (c <= POINT_RADIUS)
+        double dwRadius = qPow(qPow(pt1.x() - pt2.x(), 2) + qPow(pt1.y() - pt2.y(), 2),0.5);
+        if (dwRadius <= POINT_RADIUS)
         {
             m_bMousePress = true;
 
@@ -227,9 +222,14 @@ void UnlockTool::mouseMoveEvent(QMouseEvent *event)
 
 void UnlockTool::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (m_bMousePress)
+    {
+        m_bMousePress = false;
+        update();
+        emit SignalPwdChange(m_dwPassword);
+        return;
+    }
+
     m_bMousePress = false;
     update();
-
-    if (m_dwPassword > 0)
-        emit SignalPwdChange(m_dwPassword);
 }

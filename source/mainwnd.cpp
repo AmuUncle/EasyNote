@@ -284,6 +284,7 @@ void MainWnd::PreLogin()
     {
         hide();
         m_pMouseWatcher->stop();
+        m_pUnlockdlg->Clear();
         m_pUnlockdlg->show();
     }
     else
