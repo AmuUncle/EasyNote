@@ -9,6 +9,7 @@
 class NavPane;
 class NoteListPane;
 class NoteViewPane;
+class UnlockTool;
 
 class MainWnd : public QWidget
 {
@@ -37,6 +38,7 @@ private:
     NavPane *m_pNvrPane;
     NoteListPane *m_pNoteListPane;
     NoteViewPane *m_pNoteViewPane;
+    UnlockTool *m_pUnlockdlg;
 
     bool m_bCloseAnimationState;
 

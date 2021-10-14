@@ -14,6 +14,7 @@
 - Qt 5.9 + msvc 2015
 - Windows(x32, x64)/Linux(x32, x64) 
 - 理论上Qt 5.6以上msvc编译器都支持
+- 支持图案密码登录
 
 # 🛠️主要技术
 
@@ -31,6 +32,9 @@
 
 ### 登录
 ![登录](http://hudejie.top/images/EasyNote/gif/1.gif)
+
+### 图案密码登录
+![登录](http://hudejie.top/images/EasyNote/gif/12.gif)
 
 ### 新建文档
 ![新建文档](http://hudejie.top/images/EasyNote/gif/2.gif)

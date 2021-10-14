@@ -6,6 +6,7 @@
 #include "about.h"
 #include "login.h"
 #include "setpwddlg.h"
+#include "unlocktool.h"
 
 #define STANDBY_TRIGGER_TIME  10 * 60 * 1000     // 鼠标无操作，自动进入锁定界面
 
@@ -18,12 +19,12 @@ MainWnd::MainWnd(QWidget *parent) :
     m_pNvrPane = NULL;
     m_pNoteListPane = NULL;
     m_pNoteViewPane = NULL;
+    m_pUnlockdlg = NULL;
 
     GLOBAL_FUNC_RUN
     CANMOVE
 
     InitMainPaneLayout();
-
 }
 
 MainWnd::~MainWnd()
@@ -46,6 +47,7 @@ void MainWnd::CreateAllChildWnd()
     NEW_OBJECT(m_pNvrPane, NavPane);
     NEW_OBJECT(m_pNoteListPane, NoteListPane);
     NEW_OBJECT(m_pNoteViewPane, NoteViewPane);
+    m_pUnlockdlg = new UnlockTool();
 }
 
 void MainWnd::InitCtrl()
@@ -79,6 +81,22 @@ void MainWnd::InitSolts()
     connect(m_pNvrPane, &NavPane::SignalIDChange, [=](int id) {
         m_pNoteListPane->EnableGroupMode(id == DEFAULT);
         DATAMGR->SetNavItem((NavItem)id);
+    });
+
+    connect(m_pUnlockdlg, &UnlockTool::SignalPwdChange, [=](uint dwPassword) {
+        QByteArray value;
+        value = QCryptographicHash::hash(QString::number(dwPassword).toLocal8Bit(), QCryptographicHash::Md5);
+
+        if (DATAMGR->CheckPwd(QString(value.toHex())))
+        {
+            m_pUnlockdlg->hide();
+            show();
+            m_pMouseWatcher->start(1000);
+        }
+        else
+        {
+            MessageBoxTip(tr("密码错误！"));
+        }
     });
 
     connect(m_pNvrPane, SIGNAL(SignalIDChange(int)), m_pNoteListPane, SLOT(OnIdChange(int)));
@@ -121,9 +139,31 @@ void MainWnd::InitSolts()
 
         case MENUTYPE_SETPWD:
             {
+                UnlockTool dlg(false, this);
+                if (dlg.exec() == QDialog::Accepted)
+                {
+                    if (0 == dlg.GetPwd())
+                    {
+                        if (QMessageBox::Yes != MessageBoxExt(tr("未设置密码图案，启动程序将无需输入密码！")))
+                            return;
 
-                SetPwdDlg dlg(this);
-                dlg.exec();
+                        DATAMGR->SetPwd("");
+
+                        return;
+                    }
+
+
+                    if (QMessageBox::Yes != MessageBoxExt(tr("密码设置成功后，每次启动程序都需要输入密码进行验证，请牢记密码，遗失将无法打开本程序！")))
+                        return;
+
+                    QByteArray value;
+                    value = QCryptographicHash::hash(QString::number(dlg.GetPwd()).toLocal8Bit(),QCryptographicHash::Md5);
+
+                    if (!DATAMGR->SetPwd(QString(value.toHex())))
+                    {
+                        MessageBoxTip(tr("设置失败！"));
+                    }
+                }
             }
             break;
 
@@ -244,13 +284,13 @@ void MainWnd::PreLogin()
     {
         hide();
         m_pMouseWatcher->stop();
-
-        Login dlg;
-        dlg.exec();
+        m_pUnlockdlg->show();
     }
-
-    show();
-    m_pMouseWatcher->start(1000);
+    else
+    {
+        show();
+        m_pMouseWatcher->start(1000);
+    }
 }
 
 

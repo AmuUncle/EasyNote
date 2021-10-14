@@ -46,6 +46,7 @@ void QMessageBoxEx::InitCtrl()
 
     m_labelLogo->setFixedSize(64, 64);
     m_labelTitle->setAlignment(Qt::AlignCenter);
+    m_labelTitle->setWordWrap(true);
 
     m_btnCancel->setFixedSize(100, 30);
     m_btnCancel->setText(tr("取消"));

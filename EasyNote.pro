@@ -39,7 +39,8 @@ SOURCES += source/main.cpp\
     source/popconfirm.cpp \
     source/login.cpp \
     source/setpwddlg.cpp \
-    source/messagebox.cpp
+    source/messagebox.cpp \
+    source/unlocktool.cpp
 
 HEADERS  += include/mainwnd.h \
     include/datamgr.h \
@@ -53,7 +54,8 @@ HEADERS  += include/mainwnd.h \
     include/popconfirm.h \
     include/login.h \
     include/setpwddlg.h \
-    include/messagebox.h
+    include/messagebox.h \
+    include/unlocktool.h
 
 unix|win32: LIBS += -L$$PWD/lib/ -lBasicSdk
 
